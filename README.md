@@ -18,5 +18,8 @@ Requires Cuckoo Sandbox (*has been undergoing major functionality revamps for a 
 MongoDB
 Python
 
+### Visit the Wiki section to access our full research paper, including detailed findings and insights gained from the project. We also welcome engaging in conversations and feedback in the Discussions forum!
+
+
 *Below is how we always planned the workflow of the entire MSE would look like:*
 ![MSE](https://github.com/user-attachments/assets/5e018f6e-84fe-4d41-8b3a-869827bf8422)
