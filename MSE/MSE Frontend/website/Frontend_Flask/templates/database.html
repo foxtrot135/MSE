@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MongoDB Data Display</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Malware Databse</h1>
+ <a href="{{ url_for('index') }}">Go to Search Page</a>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Repository</th>
+                <th>File Name</th>
+                <th>Download Link</th>
+                <th>MD5 Hash</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for doc in documents %}
+                <tr>
+                    <td>{{ doc.repository }}</td>
+                    <td>{{ doc.file_name }}</td>
+                    <td><a href="{{ doc.download_link }}" target="_blank">{{ doc.download_link }}</a></td>
+                    <td>{{ doc.md5_hash }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

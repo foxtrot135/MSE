@@ -1,0 +1,653 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <style>
+           body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f2f2f2;
+    }
+    .container {
+        max-width: 800px;
+        margin: 50px auto; /* Adjust 'auto' for left margin */
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        text-align: center; /* Center content within container */
+    }
+    h1 {
+        text-align: center;
+    }
+    form {
+        text-align: center;
+    }
+    input[type="text"] {
+        width: 70%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+    input[type="submit"] {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #ffffff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    input[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+
+    /* Table styling */
+    table {
+        border-collapse: collapse;
+        border: 1px solid #ddd;
+        margin-left: 0px; /* Move table slightly left (optional) */
+    }
+    th, td {
+        border: 1px solid #ddd;
+        padding: 5px;
+    }
+    th {
+        font-weight: bold;
+        background-color: #f2f2f2;
+    }
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+    </style>
+</head>
+<body>
+    <a href="/database">Go to Database Page</a>
+    <div class="container">
+        <h1>Search Malware Database</h1>
+        <form id="searchForm">
+            <input type="text" id="searchInput" placeholder="Enter search query">
+            <br>
+            <input type="submit" value="Search">
+        </form>
+        <div id="searchResults"></div>
+    </div>
+
+    <script>
+        document.getElementById('searchForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const searchQuery = document.getElementById('searchInput').value;
+            console.log('Search query:', searchQuery); // Log the search query to console
+
+            const formData = new FormData();
+            formData.append('query', searchQuery);
+
+            const response = await fetch('/search', {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+            displaySearchResults(data);
+        });
+
+        function displaySearchResults(results) {
+            const searchResultsDiv = document.getElementById('searchResults');
+            searchResultsDiv.innerHTML = '';
+
+            if (results.length === 0) {
+                searchResultsDiv.innerHTML = '<p>No results found</p>';
+                return;
+            }
+
+
+            const table = document.createElement('table');
+            const thead = table.createTHead();
+            const tbody = table.createTBody();
+
+            const headers = Object.keys(results[0]);
+            const headerRow = thead.insertRow();
+            // Create table headers, except for the 'download_link' header
+    headers.forEach(header => {
+        if (header !== 'download_link') {
+            const th = document.createElement('th');
+            th.textContent = header;
+            headerRow.appendChild(th);
+        }
+    });
+
+    // Add 'download_link' header as the last column
+    const downloadHeader = document.createElement('th');
+    downloadHeader.textContent = 'Download';
+    headerRow.appendChild(downloadHeader);
+
+    results.forEach(result => {
+        const row = tbody.insertRow();
+        headers.forEach(header => {
+            if (header !== 'download_link') {
+                const cell = row.insertCell();
+                cell.textContent = result[header];
+            }
+        });
+
+        // Add 'download_link' cell as the last column
+        const downloadCell = row.insertCell();
+        const link = document.createElement('a');
+        link.href = result['download_link']; // Assuming 'download_link' is the key
+        link.textContent = 'Download';
+        downloadCell.appendChild(link);
+    });
+
+    searchResultsDiv.appendChild(table);
+}
+    </script>
+</body>
+</html> -->
+
+
+<!-- **************************************************** -->
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Malware Database</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5; /* Light gray background */
+            color: #333; /* Dark text color */
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff; /* White container background */
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h1 {
+            margin-bottom: 20px;
+            color: #007bff; /* Blue heading color */
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        input[type="text"], select {
+            width: calc(70% - 22px); /* Adjusted width */
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        input[type="submit"] {
+            width: 30%; /* Adjusted width */
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 16px;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        /* Table styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <a href="/database" style="display: block; text-align: center; margin-bottom: 20px;">Go to Database Page</a>
+    <div class="container">
+        <h1>Search Malware Database</h1>
+        <form id="searchForm">
+            <input type="text" id="searchInput" placeholder="Enter search query">
+            <select id="osSelect">
+                <option value="All">All</option>
+                <option value="Windows">Windows</option>
+                <option value="Linux">Linux</option>
+                <option value="Android">Android</option>
+                <option value="Cross-Platform">Cross-Platform</option>
+            </select>
+            <input type="submit" value="Search">
+        </form>
+        <div id="searchResults"></div>
+    </div>
+
+    <script>
+        document.getElementById('searchForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const searchQuery = document.getElementById('searchInput').value;
+            const selectedOS = document.getElementById('osSelect').value;
+
+            const formData = new FormData();
+            formData.append('query', searchQuery);
+            formData.append('os', selectedOS);
+
+            const response = await fetch('/search', {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+            displaySearchResults(data);
+        });
+
+        function displaySearchResults(results) {
+            const searchResultsDiv = document.getElementById('searchResults');
+            searchResultsDiv.innerHTML = '';
+
+            if (results.length === 0) {
+                searchResultsDiv.innerHTML = '<p>No results found</p>';
+                return;
+            }
+
+            const table = document.createElement('table');
+            const thead = table.createTHead();
+            const tbody = table.createTBody();
+
+            const headers = Object.keys(results[0]);
+            const headerRow = thead.insertRow();
+            headers.forEach(header => {
+                if (header !== 'download_link') {
+                    const th = document.createElement('th');
+                    th.textContent = header;
+                    headerRow.appendChild(th);
+                }
+            });
+
+            // Add 'download_link' header as the last column
+            const downloadHeader = document.createElement('th');
+            downloadHeader.textContent = 'Download';
+            headerRow.appendChild(downloadHeader);
+
+            results.forEach(result => {
+                const row = tbody.insertRow();
+                headers.forEach(header => {
+                    if (header !== 'download_link') {
+                        const cell = row.insertCell();
+                        cell.textContent = result[header];
+                    }
+                });
+
+                // Add 'download_link' cell as the last column
+                const downloadCell = row.insertCell();
+                const link = document.createElement('a');
+                link.href = result['download_link'];
+                link.textContent = 'Download';
+                downloadCell.appendChild(link);
+            });
+
+            searchResultsDiv.appendChild(table);
+        }
+    </script>
+</body>
+</html> -->
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MalwareX</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff; /* Main background color */
+            color: #333; /* Dark text color */
+            font-family: Arial, sans-serif;
+        }
+        .header-container {
+            background-color: #3f51b5; /* Header container color */
+            padding: 20px;
+            color: #ffffff; /* Text color in header container */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .header-container h1 {
+            margin: 0;
+            font-size: 24px; /* Adjusted font size */
+        }
+        .subheading {
+            font-size: 14px; /* Adjusted font size */
+            margin: 0;
+        }
+        .header-links {
+            display: flex;
+            align-items: center;
+        }
+        .header-links a {
+            margin-right: 500px;
+            color: #fff;
+            text-decoration: none;
+        }
+        .header-links a:last-child {
+            margin-right: 0;
+        }
+        .windows-malware-link {
+            margin-right: 0px auto; /* Adjusted margin */
+            margin-top: 20px; /* Adjusted margin */
+            color: #fff;
+            text-decoration: none;
+        }
+        form {
+            display: flex;
+            align-items: center;
+        }
+        input[type="text"], select {
+            width: 50%; /* Adjusted width */
+            padding: 10px;
+            background-color: #f0f0f0; /* Light gray background */
+            margin-right: 10px;
+            border: 1px solid #ccc; /* Light gray border for search bar */
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 14px;
+            color: #333; /* Text color */
+        }
+        input[type="text"]::placeholder {
+            color: #424242; /* Placeholder text color */
+        }
+        select {
+            padding: 10px;
+            border: 1px solid #ccc; /* Light gray border for dropdown */
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            color: #333; /* Text color */
+        }
+        input[type="submit"] {
+            background-color: #4caf50; /* Green */
+            color: #fff; /* White text color */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            padding: 10px 20px;
+            font-size: 14px;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049; /* Darker green on hover */
+        }
+        /* Table styling */
+        .table-container {
+            width: 80%;
+            margin: 20px auto; /* Center align the table */
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid #d5d5d5; /* Light gray border */
+        }
+        th, td {
+            border: 1px solid #d5d5d5; /* Light gray border */
+            padding: 10px;
+        }
+        th {
+            background-color: #777777; /* Green background for header */
+            font-weight: bold;
+            color: #fff; /* White text color */
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2; /* Very light gray */
+        }
+        a {
+            color: #007bff; /* Primary blue link color */
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        /* Download button style */
+        .download-btn {
+            background-color: #007bff; /* Primary blue */
+            border: none;
+            color: #fff; /* White text color */
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 14px;
+            border-radius: 5px;
+        }
+        .download-btn:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+        /* Icon style */
+        .download-icon {
+            margin-right: 5px;
+        }
+        /* Initial text style */
+        .initial-text {
+            text-align: center;
+            margin-top: 200px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #0057b38d;
+        }
+        /* MalwareX style */
+        .malwarex {
+            font-size: 50px;
+            color: #4caf50; /* Green color */
+            font-family: "Underdog"
+        }
+        /* Severity score color coding */
+        .severity-rectangle {
+            display: inline-block;
+            width: 40px;
+            height: 25px;
+            border-radius: 5px;
+            margin-right: 5px;
+        }
+        .high-severity { background-color: #ff3c32; }
+        .medium-severity { background-color: #febf37; }
+        .low-severity { background-color: #77dd77; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div>
+                <h1>MalwareX</h1>
+                <p class="subheading">Malware Search Engine</p>
+            </div>
+            <div class="header-links">
+                <a class="windows-malware-link" href="/win">Windows Malware</a>
+                <form id="searchForm">
+                    <input type="text" id="searchInput" placeholder="Enter: md5 hash, file name" style="width: 115%;">
+                    <!-- Dropdown for OS selection -->
+                    <select id="osSelect">
+                        <option value="All">All OS Type</option>
+                        <option value="Windows">Windows</option>
+                        <option value="Linux">Linux</option>
+                        <option value="Android">Android</option>
+                        <option value="Cross-Platform">Cross-Platform</option>
+                    </select>
+                    <input type="submit" value="Search">
+                </form>
+            </div>
+        </div>
+    </header>
+
+    <div id="searchResults" class="container">
+        <!-- Initial text -->
+        <div class="initial-text">
+            <p class="malwarex">MalwareX</p> <!-- Added MalwareX name -->
+            <p><i class="fa fa-search"></i> Use the search bar above to enter an MD5 hash or file name.</p>
+        </div>
+        <!-- Search results will be displayed here -->
+    </div>
+
+    <footer>
+        <!-- Footer content, if any -->
+    </footer>
+
+    <script>
+        document.getElementById('searchForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const searchQuery = document.getElementById('searchInput').value;
+            const selectedOS = document.getElementById('osSelect').value;
+
+            const formData = new FormData();
+            formData.append('query', searchQuery);
+            formData.append('os', selectedOS);
+
+            const response = await fetch('/search', {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+            displaySearchResults(data);
+        });
+
+        function displaySearchResults(results) {
+            const searchResultsDiv = document.getElementById('searchResults');
+            const initialTextDiv = searchResultsDiv.querySelector('.initial-text');
+            const tableContainer = document.createElement('div');
+            tableContainer.setAttribute('class', 'table-container');
+
+            searchResultsDiv.innerHTML = '';
+
+            if (results.length === 0) {
+                searchResultsDiv.innerHTML = '<p>No results found</p>';
+                return;
+            }
+
+            const table = document.createElement('table');
+            const thead = table.createTHead();
+            const tbody = table.createTBody();
+
+            const headers = Object.keys(results[0]);
+            const headerRow = thead.insertRow();
+            headers.forEach(header => {
+                if (header !== 'download_link') {
+                    const th = document.createElement('th');
+                    th.textContent = getHeaderLabel(header); // Function to get custom header label
+                    headerRow.appendChild(th);
+                }
+            });
+
+            // Add 'Download' header as the last column
+            const downloadHeader = document.createElement('th');
+            downloadHeader.textContent = 'Download';
+            headerRow.appendChild(downloadHeader);
+
+            results.forEach(result => {
+                const row = tbody.insertRow();
+                headers.forEach(header => {
+                    if (header !== 'download_link') {
+                        const cell = row.insertCell();
+                        if (header === 'score') {
+                            const scoreDiv = document.createElement('div');
+                            scoreDiv.classList.add('severity-rectangle', getSeverityClass(result[header]));
+                            scoreDiv.textContent = result[header];
+                            cell.appendChild(scoreDiv);
+                        } else {
+                            cell.textContent = result[header];
+                        }
+                    }
+                });
+
+                // Add 'download_link' cell as the last column
+                const downloadCell = row.insertCell();
+                const link = document.createElement('a');
+                link.href = result['download_link'];
+                // Create download button element
+                const downloadBtn = document.createElement('button');
+                downloadBtn.classList.add('download-btn');
+                downloadBtn.textContent = 'Download'; // Changed button text content
+                // Create download icon element
+                const downloadIcon = document.createElement('i');
+                downloadIcon.classList.add('fa', 'fa-download', 'download-icon');
+                // Append icon to the button
+                downloadBtn.appendChild(downloadIcon);
+                // Append button to the link
+                link.appendChild(downloadBtn);
+                // Append link to the cell
+                downloadCell.appendChild(link);
+            });
+
+            tableContainer.appendChild(table);
+            searchResultsDiv.appendChild(tableContainer);
+
+            // Hide initial text
+            initialTextDiv.style.display = 'none';
+        }
+
+        // Function to get custom header labels
+        function getHeaderLabel(header) {
+            const headersMap = {
+                "file_name": "File name",
+                "md5_hash": "File hash",
+                "OS_Type": "OS type",
+                "Architecture_&_Platform": "Architecture & Platform",
+                "download_link": "Download",
+                "score": "Severity"
+            };
+            return headersMap[header] || header;
+        }
+
+        // Function to determine severity class based on score
+        function getSeverityClass(score) {
+            if (score >= 7) {
+                return 'high-severity';
+            } else if (score >= 4) {
+                return 'medium-severity';
+            } else {
+                return 'low-severity';
+            }
+        }
+    </script>
+</body>
+</html>

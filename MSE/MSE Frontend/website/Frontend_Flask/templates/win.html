@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windows Malware - MalwareX</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff; /* Main background color */
+            color: #333; /* Dark text color */
+            font-family: Arial, sans-serif;
+        }
+        header {
+            background-color: #3f51b5; /* Header container color */
+            padding: 2px;
+            color: #ffffff; /* Text color in header container */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .table-container {
+    width: 60%;
+    margin: 20px auto; /* Center align the table horizontally */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid #d5d5d5; /* Light gray border */
+        }
+        th, td {
+            border: 1px solid #d5d5d5; /* Light gray border */
+            padding: 10px;
+            text-align: left; /* Align text left within cells */
+        }
+        th {
+            background-color: #777777; /* Green background for header */
+            font-weight: bold;
+            color: #fff; /* White text color */
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2; /* Very light gray */
+        }
+        a {
+            color: #007bff; /* Primary blue link color */
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .file-name-col {
+            width: 10%; /* Adjust column width for File Name */
+        }
+        .os-type-col {
+            width: 20%; /* Adjust column width for OS Type */
+        }
+        .arch-platform-col {
+            width: 20%; /* Adjust column width for Architecture & Platform */
+        }
+        .md5-hash-col {
+            width: 15%; /* Adjust column width for MD5 Hash */
+        }
+        .download-link-col {
+            width: 30%; /* Adjust column width for Download Link */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>MalwareX</h1>
+    </header>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th class="file-name-col">File Name</th>
+                    <th class="os-type-col">OS Type</th>
+                    <th class="arch-platform-col">Architecture & Platform</th>
+                    <th class="md5-hash-col">MD5 Hash</th>
+                    <th class="download-link-col">Download Link</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for malware in windows_malware %}
+                <tr>
+                    <td>{{ malware['file_name'] }}</td>
+                    <td>{{ malware['OS_Type'] }}</td>
+                    <td>{{ malware['Architecture_&_Platform'] }}</td>
+                    <td>{{ malware['md5_hash'] }}</td>
+                    <td><a href="{{ malware['download_link'] }}">Download</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Your JavaScript code
+    </script>
+</body>
+</html>

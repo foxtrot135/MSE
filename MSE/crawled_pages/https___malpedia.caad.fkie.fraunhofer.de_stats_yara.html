@@ -1,0 +1,2418 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="author" content="Fraunhofer FKIE"/>
+    <meta name="description" content="Performance of all yara rules contained on Malpedia, tested against the whole corpus."/>
+    
+
+    <title>YARA Statistics</title>
+
+    <link href="/static/malpediasite/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/malpediasite/css/malpedia.css" rel="stylesheet">
+    <link href="/static/malpediasite/font-awesome-5.7.0/css/all.min.css" rel="stylesheet">
+
+    <link rel="apple-touch-icon" sizes="57x57" href="/static/malpediasite/icon/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/static/malpediasite/icon/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/static/malpediasite/icon/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/static/malpediasite/icon/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/static/malpediasite/icon/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/static/malpediasite/icon/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/static/malpediasite/icon/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/static/malpediasite/icon/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/malpediasite/icon/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/static/malpediasite/icon/android-chrome-36x36.png" sizes="36x36">
+    <link rel="icon" type="image/png" href="/static/malpediasite/icon/android-chrome-48x48.png" sizes="48x48">
+    <link rel="icon" type="image/png" href="/static/malpediasite/icon/android-chrome-72x72.png" sizes="72x72">
+    <link rel="icon" type="image/png" href="/static/malpediasite/icon/android-chrome-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/static/malpediasite/icon/android-chrome-144x144.png" %}" sizes="144x144">
+    <link rel="icon" type="image/png" href="/static/malpediasite/icon/android-chrome-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/static/malpediasite/icon/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/static/malpediasite/icon/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/static/malpediasite/icon/favicon-96x96.png" sizes="96x96">
+    <link rel="shortcut icon" type="image/x-icon" href="/static/malpediasite/icon/favicon.ico">
+    <meta name="msapplication-TileImage" content="/static/malpediasite/icon/mstile-150x150.png">
+    <meta name="msapplication-square70x70logo" content="/static/malpediasite/icon/mstile-70x70.png">
+    <meta name="msapplication-square150x150logo" content="/static/malpediasite/icon/mstile-150x150.png">
+    <meta name="msapplication-wide310x150logo" content="/static/malpediasite/icon/mstile-310x150.png">
+    <meta name="msapplication-square310x310logo" content="/static/malpediasite/icon/mstile-310x310.png">
+    <link href="/static/malpediasite/icon/apple-touch-startup-image-320x460.png" media="(device-width: 320px) and (device-height: 480px) and (-webkit-device-pixel-ratio: 1)" rel="apple-touch-startup-image">
+    <link href="/static/malpediasite/icon/apple-touch-startup-image-640x920.png" media="(device-width: 320px) and (device-height: 480px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">
+    <link href="/static/malpediasite/icon/apple-touch-startup-image-640x1096.png" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">
+    <link href="/static/malpediasite/icon/apple-touch-startup-image-748x1024.png" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 1) and (orientation: landscape)" rel="apple-touch-startup-image">
+    <link href="/static/malpediasite/icon/apple-touch-startup-image-750x1024.png" media="" rel="apple-touch-startup-image">
+    <link href="/static/malpediasite/icon/apple-touch-startup-image-750x1294.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">
+    <link href="/static/malpediasite/icon/apple-touch-startup-image-768x1004.png" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 1) and (orientation: portrait)" rel="apple-touch-startup-image">
+    <link href="/static/malpediasite/icon/apple-touch-startup-image-1182x2208.png" media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" rel="apple-touch-startup-image">
+    <link href="/static/malpediasite/icon/apple-touch-startup-image-1242x2148.png" media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" rel="apple-touch-startup-image">
+    <link href="/static/malpediasite/icon/apple-touch-startup-image-1496x2048.png" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" rel="apple-touch-startup-image">
+    <link href="/static/malpediasite/icon/apple-touch-startup-image-1536x2008.png" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" rel="apple-touch-startup-image">
+    
+  </head>
+
+  <body>
+  <script src="/static/malpediasite/js/auto_darkmode.js"></script>
+  <div class="container"><noscript>Please enable JavaScript to use all features of this site. </noscript><nav class="navbar navbar-toggleable-md navbar-light bg-faded clearfix"><button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbar_toggle" aria-controls="navbar_toggle" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button><a class="navbar-brand float-left hidden-md-down" href="/"><img class="navbar-logo" src="/static/malpediasite/logo.png"><img class="navbar-logo navbar-logo-dark" src="/static/malpediasite/logo_dark.png"></a><a class="navbar-brand-small float-left hidden-lg-up" href="/"><img class="navbar-logo" src="/static/malpediasite/logo.png"><img class="navbar-logo navbar-logo-dark" src="/static/malpediasite/logo_dark.png"></a><div class="collapse navbar-collapse mt-lg-auto ml-lg-auto" id="navbar_toggle"><hr class="hidden-lg-up" /><ul class="navbar-nav ml-lg-auto"><li class="nav-item "><a class="nav-link" href="/library">Inventory</a></li><!----><li class="nav-item active"><a class="nav-link" href="/stats/general">Statistics</a></li><li class="nav-item "><a class="nav-link" href="/usage/tos">Usage</a></li><li class="nav-item"><a class="nav-link" href="/apiqr/">ApiVector</a></li><li class="nav-item"><a class="nav-link" href="/login">Login</a></li></ul></div><a class="right-logo hidden-md-down" target="_blank" href="https://www.fkie.fraunhofer.de/"><img class="navbar-logo" src="/static/malpediasite/fkie_logo.png"><img class="navbar-logo navbar-logo-dark" src="/static/malpediasite/fkie_logo_dark.png"></a></nav><ul class="nav nav-pills" role="tablist"><li class="nav-item"><a class="nav-link " href="/stats/general">General</a></li><li class="nav-item"><a class="nav-link active" href="/stats/yara">YARA</a></li><li class="nav-item"><a class="nav-link " href="/stats/timestamps">Timestamps</a></li><li class="nav-item"><a class="nav-link " href="/stats/linker_info">Linker Info</a></li><li class="nav-item"><a class="nav-link " href="/stats/api_usage">WinAPI Usage</a></li><li class="nav-item"><a class="nav-link " href="/stats/api_dll_frequencies">WinAPI Frequencies</a></li></ul><hr><div class="row"><div class="col-xl-12 darkmode-background"><h3>YARA Statistics</h3><canvas id="myAccuracyChart" height=100></canvas><canvas id="myGrowthChart" height="100"></canvas></div></div></div><footer class="footer bg-faded"><div class="container"><div class="col-xs-12"><a class="logo-red" href="/impressum">Impressum</a>
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         <a class="logo-red" href="/datenschutzerklaerung">Datenschutzerkl&auml;rung</a><div class="float-right"><a style="margin-right:5px;" class="clickable-icon" href="/feeds/rss/latest" ><i class="logo-red fa fa-rss" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Latest RSS Feed"></i></a></div></div></div></footer><script src="/static/malpediasite/js/jquery-3.5.1.min.js"></script><script src="/static/malpediasite/js/tether.min.js"></script><script src="/static/malpediasite/js/bootstrap.min.js"></script><script src="/static/malpediasite/js/title_render.js"></script><script src="/static/malpediasite/js/Chart.bundle.min.js"></script><script src="/static/malpediasite/js/clickable-row-0.0.4.js"></script><script>
+var ctx = document.getElementById("myAccuracyChart");
+var myAccuracyChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+            labels: [
+                
+                    "2017-05-01",
+                
+                    "2017-05-03",
+                
+                    "2017-05-09",
+                
+                    "2017-05-10",
+                
+                    "2017-05-11",
+                
+                    "2017-05-12",
+                
+                    "2017-05-13",
+                
+                    "2017-05-16",
+                
+                    "2017-05-17",
+                
+                    "2017-05-18",
+                
+                    "2017-05-19",
+                
+                    "2017-05-20",
+                
+                    "2017-05-21",
+                
+                    "2017-05-22",
+                
+                    "2017-05-23",
+                
+                    "2017-05-23",
+                
+                    "2017-05-29",
+                
+                    "2017-05-30",
+                
+                    "2017-05-31",
+                
+                    "2017-06-01",
+                
+                    "2017-06-02",
+                
+                    "2017-06-03",
+                
+                    "2017-06-05",
+                
+                    "2017-06-06",
+                
+                    "2017-06-07",
+                
+                    "2017-06-08",
+                
+                    "2017-06-09",
+                
+                    "2017-06-12",
+                
+                    "2017-06-13",
+                
+                    "2017-06-14",
+                
+                    "2017-06-15",
+                
+                    "2017-06-24",
+                
+                    "2017-07-05",
+                
+                    "2017-07-07",
+                
+                    "2017-07-09",
+                
+                    "2017-07-11",
+                
+                    "2017-07-12",
+                
+                    "2017-07-17",
+                
+                    "2017-07-18",
+                
+                    "2017-07-19",
+                
+                    "2017-07-26",
+                
+                    "2017-07-29",
+                
+                    "2017-08-01",
+                
+                    "2017-08-02",
+                
+                    "2017-08-03",
+                
+                    "2017-08-04",
+                
+                    "2017-08-07",
+                
+                    "2017-08-08",
+                
+                    "2017-08-10",
+                
+                    "2017-08-22",
+                
+                    "2017-08-26",
+                
+                    "2017-08-28",
+                
+                    "2017-08-31",
+                
+                    "2017-09-01",
+                
+                    "2017-09-06",
+                
+                    "2017-09-07",
+                
+                    "2017-09-09",
+                
+                    "2017-09-13",
+                
+                    "2017-09-14",
+                
+                    "2017-09-15",
+                
+                    "2017-09-18",
+                
+                    "2017-09-19",
+                
+                    "2017-09-20",
+                
+                    "2017-09-24",
+                
+                    "2017-09-26",
+                
+                    "2017-09-29",
+                
+                    "2017-10-02",
+                
+                    "2017-10-03",
+                
+                    "2017-10-06",
+                
+                    "2017-10-08",
+                
+                    "2017-10-09",
+                
+                    "2017-10-11",
+                
+                    "2017-10-12",
+                
+                    "2017-10-13",
+                
+                    "2017-10-14",
+                
+                    "2017-10-20",
+                
+                    "2017-10-23",
+                
+                    "2017-10-24",
+                
+                    "2017-10-25",
+                
+                    "2017-10-26",
+                
+                    "2017-11-06",
+                
+                    "2017-11-07",
+                
+                    "2017-11-08",
+                
+                    "2017-11-09",
+                
+                    "2017-11-10",
+                
+                    "2017-11-13",
+                
+                    "2017-11-16",
+                
+                    "2017-11-17",
+                
+                    "2017-11-21",
+                
+                    "2017-11-22",
+                
+                    "2017-11-23",
+                
+                    "2017-11-27",
+                
+                    "2017-12-04",
+                
+                    "2017-12-05",
+                
+                    "2017-12-06",
+                
+                    "2017-12-07",
+                
+                    "2017-12-08",
+                
+                    "2017-12-09",
+                
+                    "2017-12-11",
+                
+                    "2017-12-13",
+                
+                    "2017-12-14",
+                
+                    "2017-12-15",
+                
+                    "2017-12-18",
+                
+                    "2017-12-19",
+                
+                    "2017-12-21",
+                
+                    "2017-12-22",
+                
+                    "2017-12-29",
+                
+                    "2017-12-30",
+                
+                    "2018-01-01",
+                
+                    "2018-01-02",
+                
+                    "2018-01-03",
+                
+                    "2018-01-04",
+                
+                    "2018-01-05",
+                
+                    "2018-01-06",
+                
+                    "2018-01-07",
+                
+                    "2018-01-08",
+                
+                    "2018-01-09",
+                
+                    "2018-01-10",
+                
+                    "2018-01-11",
+                
+                    "2018-01-12",
+                
+                    "2018-01-13",
+                
+                    "2018-01-14",
+                
+                    "2018-01-17",
+                
+                    "2018-01-18",
+                
+                    "2018-01-19",
+                
+                    "2018-01-21",
+                
+                    "2018-01-22",
+                
+                    "2018-01-23",
+                
+                    "2018-01-24",
+                
+                    "2018-01-25",
+                
+                    "2018-01-28",
+                
+                    "2018-01-30",
+                
+                    "2018-01-31",
+                
+                    "2018-02-01",
+                
+                    "2018-02-02",
+                
+                    "2018-02-04",
+                
+                    "2018-02-05",
+                
+                    "2018-02-06",
+                
+                    "2018-02-07",
+                
+                    "2018-02-08",
+                
+                    "2018-02-09",
+                
+                    "2018-02-10",
+                
+                    "2018-02-13",
+                
+                    "2018-02-15",
+                
+                    "2018-02-19",
+                
+                    "2018-02-21",
+                
+                    "2018-02-22",
+                
+                    "2018-02-26",
+                
+                    "2018-02-27",
+                
+                    "2018-03-01",
+                
+                    "2018-03-02",
+                
+                    "2018-03-05",
+                
+                    "2018-03-09",
+                
+                    "2018-03-12",
+                
+                    "2018-03-13",
+                
+                    "2018-03-14",
+                
+                    "2018-03-15",
+                
+                    "2018-03-16",
+                
+                    "2018-03-17",
+                
+                    "2018-03-19",
+                
+                    "2018-03-20",
+                
+                    "2018-03-21",
+                
+                    "2018-03-22",
+                
+                    "2018-03-23",
+                
+                    "2018-03-26",
+                
+                    "2018-03-27",
+                
+                    "2018-03-28",
+                
+                    "2018-03-31",
+                
+                    "2018-04-12",
+                
+                    "2018-04-13",
+                
+                    "2018-04-14",
+                
+                    "2018-04-17",
+                
+                    "2018-04-18",
+                
+                    "2018-04-20",
+                
+                    "2018-04-23",
+                
+                    "2018-04-24",
+                
+                    "2018-04-25",
+                
+                    "2018-04-26",
+                
+                    "2018-04-27",
+                
+                    "2018-05-02",
+                
+                    "2018-05-03",
+                
+                    "2018-05-08",
+                
+                    "2018-05-11",
+                
+                    "2018-05-14",
+                
+                    "2018-05-16",
+                
+                    "2018-05-17",
+                
+                    "2018-05-23",
+                
+                    "2018-05-28",
+                
+                    "2018-05-29",
+                
+                    "2018-05-30",
+                
+                    "2018-06-05",
+                
+                    "2018-06-06",
+                
+                    "2018-06-07",
+                
+                    "2018-06-13",
+                
+                    "2018-06-14",
+                
+                    "2018-06-19",
+                
+                    "2018-06-20",
+                
+                    "2018-06-21",
+                
+                    "2018-06-24",
+                
+                    "2018-06-25",
+                
+                    "2018-06-26",
+                
+                    "2018-06-28",
+                
+                    "2018-07-03",
+                
+                    "2018-07-05",
+                
+                    "2018-07-06",
+                
+                    "2018-07-09",
+                
+                    "2018-07-10",
+                
+                    "2018-07-11",
+                
+                    "2018-07-23",
+                
+                    "2018-07-24",
+                
+                    "2018-07-26",
+                
+                    "2018-07-31",
+                
+                    "2018-08-01",
+                
+                    "2018-08-03",
+                
+                    "2018-08-06",
+                
+                    "2018-08-09",
+                
+                    "2018-08-10",
+                
+                    "2018-08-14",
+                
+                    "2018-08-20",
+                
+                    "2018-08-21",
+                
+                    "2018-08-22",
+                
+                    "2018-08-23",
+                
+                    "2018-08-31",
+                
+                    "2018-09-03",
+                
+                    "2018-09-05",
+                
+                    "2018-09-06",
+                
+                    "2018-09-07",
+                
+                    "2018-09-11",
+                
+                    "2018-09-12",
+                
+                    "2018-09-13",
+                
+                    "2018-09-15",
+                
+                    "2018-09-19",
+                
+                    "2018-09-20",
+                
+                    "2018-09-21",
+                
+                    "2018-09-27",
+                
+                    "2018-09-30",
+                
+                    "2018-10-03",
+                
+                    "2018-10-04",
+                
+                    "2018-10-09",
+                
+                    "2018-10-18",
+                
+                    "2018-10-19",
+                
+                    "2018-10-22",
+                
+                    "2018-10-23",
+                
+                    "2018-10-24",
+                
+                    "2018-10-25",
+                
+                    "2018-10-26",
+                
+                    "2018-11-02",
+                
+                    "2018-11-05",
+                
+                    "2018-11-07",
+                
+                    "2018-11-08",
+                
+                    "2018-11-13",
+                
+                    "2018-11-14",
+                
+                    "2018-11-16",
+                
+                    "2018-11-20",
+                
+                    "2018-11-21",
+                
+                    "2018-11-23",
+                
+                    "2018-11-25",
+                
+                    "2018-11-27",
+                
+                    "2018-11-29",
+                
+                    "2018-12-02",
+                
+                    "2018-12-11",
+                
+                    "2018-12-20",
+                
+                    "2018-12-28",
+                
+                    "2018-12-31",
+                
+                    "2019-01-03",
+                
+                    "2019-01-04",
+                
+                    "2019-01-05",
+                
+                    "2019-01-07",
+                
+                    "2019-01-10",
+                
+                    "2019-01-12",
+                
+                    "2019-01-13",
+                
+                    "2019-01-15",
+                
+                    "2019-01-16",
+                
+                    "2019-01-17",
+                
+                    "2019-01-18",
+                
+                    "2019-01-19",
+                
+                    "2019-01-21",
+                
+                    "2019-01-22",
+                
+                    "2019-01-24",
+                
+                    "2019-01-26",
+                
+                    "2019-01-30",
+                
+                    "2019-01-31",
+                
+                    "2019-02-01",
+                
+                    "2019-02-04",
+                
+                    "2019-02-06",
+                
+                    "2019-02-08",
+                
+                    "2019-02-14",
+                
+                    "2019-02-15",
+                
+                    "2019-02-19",
+                
+                    "2019-02-20",
+                
+                    "2019-02-21",
+                
+                    "2019-02-23",
+                
+                    "2019-02-25",
+                
+                    "2019-02-26",
+                
+                    "2019-02-27",
+                
+                    "2019-02-28",
+                
+                    "2019-03-02",
+                
+                    "2019-03-07",
+                
+                    "2019-03-08",
+                
+                    "2019-03-10",
+                
+                    "2019-03-12",
+                
+                    "2019-03-13",
+                
+                    "2019-03-14",
+                
+                    "2019-03-15",
+                
+                    "2019-03-16",
+                
+                    "2019-03-21",
+                
+                    "2019-03-22",
+                
+                    "2019-03-26",
+                
+                    "2019-03-27",
+                
+                    "2019-03-28",
+                
+                    "2019-03-30",
+                
+                    "2019-04-01",
+                
+                    "2019-04-03",
+                
+                    "2019-04-04",
+                
+                    "2019-04-05",
+                
+                    "2019-04-08",
+                
+                    "2019-04-09",
+                
+                    "2019-04-12",
+                
+                    "2019-04-13",
+                
+                    "2019-04-17",
+                
+                    "2019-04-18",
+                
+                    "2019-04-19",
+                
+                    "2019-04-20",
+                
+                    "2019-04-24",
+                
+                    "2019-04-25",
+                
+                    "2019-04-27",
+                
+                    "2019-04-28",
+                
+                    "2019-04-30",
+                
+                    "2019-05-03",
+                
+                    "2019-05-04",
+                
+                    "2019-05-08",
+                
+                    "2019-05-09",
+                
+                    "2019-05-10",
+                
+                    "2019-05-11",
+                
+                    "2019-05-16",
+                
+                    "2019-05-17",
+                
+                    "2019-05-18",
+                
+                    "2019-05-19",
+                
+                    "2019-05-21",
+                
+                    "2019-05-22",
+                
+                    "2019-05-24",
+                
+                    "2019-05-25",
+                
+                    "2019-05-31",
+                
+                    "2019-06-03",
+                
+                    "2019-06-05",
+                
+                    "2019-06-13",
+                
+                    "2019-06-15",
+                
+                    "2019-06-18",
+                
+                    "2019-06-19",
+                
+                    "2019-06-22",
+                
+                    "2019-06-24",
+                
+                    "2019-06-25",
+                
+                    "2019-06-27",
+                
+                    "2019-06-28",
+                
+                    "2019-07-03",
+                
+                    "2019-07-06",
+                
+                    "2019-07-09",
+                
+                    "2019-07-10",
+                
+                    "2019-07-11",
+                
+                    "2019-07-12",
+                
+                    "2019-07-13",
+                
+                    "2019-07-17",
+                
+                    "2019-07-24",
+                
+                    "2019-07-25",
+                
+                    "2019-07-26",
+                
+                    "2019-07-30",
+                
+                    "2019-08-01",
+                
+                    "2019-08-03",
+                
+                    "2019-08-04",
+                
+                    "2019-08-05",
+                
+                    "2019-08-08",
+                
+                    "2019-08-10",
+                
+                    "2019-08-13",
+                
+                    "2019-08-14",
+                
+                    "2019-08-15",
+                
+                    "2019-08-16",
+                
+                    "2019-08-17",
+                
+                    "2019-08-20",
+                
+                    "2019-08-21",
+                
+                    "2019-08-23",
+                
+                    "2019-08-24",
+                
+                    "2019-08-27",
+                
+                    "2019-08-28",
+                
+                    "2019-08-29",
+                
+                    "2019-08-30",
+                
+                    "2019-08-31",
+                
+                    "2019-09-03",
+                
+                    "2019-09-04",
+                
+                    "2019-09-06",
+                
+                    "2019-09-07",
+                
+                    "2019-09-09",
+                
+                    "2019-09-10",
+                
+                    "2019-09-11",
+                
+                    "2019-09-14",
+                
+                    "2019-09-17",
+                
+                    "2019-09-20",
+                
+                    "2019-10-01",
+                
+                    "2019-10-05",
+                
+                    "2019-10-09",
+                
+                    "2019-10-10",
+                
+                    "2019-10-11",
+                
+                    "2019-10-13",
+                
+                    "2019-10-14",
+                
+                    "2019-10-15",
+                
+                    "2019-10-17",
+                
+                    "2019-10-18",
+                
+                    "2019-10-19",
+                
+                    "2019-10-22",
+                
+                    "2019-10-24",
+                
+                    "2019-10-25",
+                
+                    "2019-10-26",
+                
+                    "2019-10-29",
+                
+                    "2019-10-30",
+                
+                    "2019-10-31",
+                
+                    "2019-11-01",
+                
+                    "2019-11-04",
+                
+                    "2019-11-05",
+                
+                    "2019-11-06",
+                
+                    "2019-11-07",
+                
+                    "2019-11-13",
+                
+                    "2019-11-14",
+                
+                    "2019-11-16",
+                
+                    "2019-11-18",
+                
+                    "2019-11-21",
+                
+                    "2019-11-23",
+                
+                    "2019-11-24",
+                
+                    "2019-11-25",
+                
+                    "2019-11-28",
+                
+                    "2019-11-29",
+                
+                    "2019-11-30",
+                
+                    "2019-12-02",
+                
+                    "2019-12-04",
+                
+                    "2019-12-05",
+                
+                    "2019-12-06",
+                
+                    "2019-12-08",
+                
+                    "2019-12-09",
+                
+                    "2019-12-11",
+                
+                    "2019-12-12",
+                
+                    "2019-12-13",
+                
+                    "2019-12-14",
+                
+                    "2019-12-17",
+                
+                    "2019-12-19",
+                
+                    "2019-12-20",
+                
+                    "2019-12-25",
+                
+                    "2019-12-28",
+                
+                    "2019-12-29",
+                
+                    "2019-12-30",
+                
+                    "2020-01-01",
+                
+                    "2020-01-02",
+                
+                    "2020-01-03",
+                
+                    "2020-01-07",
+                
+                    "2020-01-10",
+                
+                    "2020-01-14",
+                
+                    "2020-01-15",
+                
+                    "2020-01-16",
+                
+                    "2020-01-17",
+                
+                    "2020-01-18",
+                
+                    "2020-01-21",
+                
+                    "2020-01-22",
+                
+                    "2020-01-23",
+                
+                    "2020-01-24",
+                
+                    "2020-01-27",
+                
+                    "2020-01-28",
+                
+                    "2020-01-30",
+                
+                    "2020-02-01",
+                
+                    "2020-02-02",
+                
+                    "2020-02-04",
+                
+                    "2020-02-05",
+                
+                    "2020-02-06",
+                
+                    "2020-02-08",
+                
+                    "2020-02-10",
+                
+                    "2020-02-11",
+                
+                    "2020-02-12",
+                
+                    "2020-02-14",
+                
+                    "2020-02-15",
+                
+                    "2020-02-25",
+                
+                    "2020-02-26",
+                
+                    "2020-02-27",
+                
+                    "2020-02-28",
+                
+                    "2020-03-03",
+                
+                    "2020-03-04",
+                
+                    "2020-03-05",
+                
+                    "2020-03-07",
+                
+                    "2020-03-10",
+                
+                    "2020-03-12",
+                
+                    "2020-03-14",
+                
+                    "2020-03-18",
+                
+                    "2020-03-20",
+                
+                    "2020-03-23",
+                
+                    "2020-03-24",
+                
+                    "2020-03-25",
+                
+                    "2020-03-26",
+                
+                    "2020-03-27",
+                
+                    "2020-03-28",
+                
+                    "2020-03-29",
+                
+                    "2020-03-31",
+                
+                    "2020-04-02",
+                
+                    "2020-04-03",
+                
+                    "2020-04-07",
+                
+                    "2020-04-08",
+                
+                    "2020-04-14",
+                
+                    "2020-04-15",
+                
+                    "2020-04-16",
+                
+                    "2020-04-17",
+                
+                    "2020-04-21",
+                
+                    "2020-04-22",
+                
+                    "2020-04-23",
+                
+                    "2020-04-24",
+                
+                    "2020-04-27",
+                
+                    "2020-04-29",
+                
+                    "2020-05-03",
+                
+                    "2020-05-06",
+                
+                    "2020-05-07",
+                
+                    "2020-05-08",
+                
+                    "2020-05-10",
+                
+                    "2020-05-14",
+                
+                    "2020-05-16",
+                
+                    "2020-05-22",
+                
+                    "2022-06-03",
+                
+                    "2022-06-08",
+                
+                    "2022-06-09",
+                
+                    "2022-06-10",
+                
+                    "2022-06-23",
+                
+                    "2022-06-28",
+                
+                    "2022-07-01",
+                
+                    "2022-07-02",
+                
+                    "2022-07-06",
+                
+                ],
+    datasets: [
+    {
+        label: "F-Score (all, in percent)",
+        fill: false,
+        lineTension: 0.1,
+        backgroundColor: "rgba(0, 150, 7,0.4)",
+        borderColor: "rgba(0, 150, 7,1)",
+        borderCapStyle: 'butt',
+        borderDash: [],
+        borderDashOffset: 0.0,
+        borderJoinStyle: 'miter',
+        pointBorderColor: "rgba(0, 150, 7,1)",
+        pointBackgroundColor: "#fff",
+        pointBorderWidth: 1,
+        pointHoverRadius: 5,
+        pointHoverBackgroundColor: "rgba(0, 150, 7,1)",
+        pointHoverBorderColor: "rgba(220,220,220,1)",
+        pointHoverBorderWidth: 2,
+        pointRadius: 3,
+        pointHitRadius: 20,
+        data: [36.598, 36.41, 36.441, 36.441, 36.379, 39.539, 40.344, 41.018, 40.955, 43.745, 43.895, 50.871, 51.319, 51.058, 51.323, 51.319, 51.668, 52.044, 52.005, 52.106, 57.143, 59.612, 60.432, 62.212, 62.444, 62.312, 62.227, 62.341, 61.918, 61.048, 62.987, 64.945, 65.391, 65.251, 65.251, 65.15, 65.152, 65.052, 66.802, 66.337, 66.27, 65.879, 64.951, 65.604, 66.188, 66.667, 66.793, 66.793, 66.792, 67.287, 67.161, 67.191, 67.219, 67.219, 67.577, 67.366, 68.062, 68.119, 67.311, 67.308, 67.304, 67.304, 67.246, 67.854, 67.92, 67.86, 68.579, 68.564, 68.562, 68.665, 68.74, 68.376, 68.4, 68.451, 68.447, 68.357, 68.33, 68.107, 68.107, 68.107, 68.053, 68.075, 67.994, 67.803, 67.905, 68.269, 68.137, 67.291, 67.124, 67.048, 67.022, 66.997, 67.352, 67.451, 67.425, 67.425, 67.45, 68.1, 68.1, 68.313, 68.329, 68.247, 68.267, 68.431, 68.661, 68.573, 68.526, 68.571, 68.639, 68.75, 68.82, 69.794, 70.025, 70.025, 70.12, 70.261, 70.134, 70.552, 70.867, 70.859, 70.241, 71.324, 71.443, 71.977, 71.868, 71.961, 71.77, 71.704, 71.704, 72.15, 72.013, 71.967, 72.404, 72.246, 72.537, 72.588, 72.621, 72.621, 72.178, 72.134, 72.722, 72.022, 71.698, 71.974, 71.965, 72.059, 72.317, 72.385, 72.254, 72.961, 73.029, 73.354, 73.744, 73.639, 73.622, 73.559, 73.429, 73.243, 73.223, 72.895, 72.87, 72.829, 72.788, 72.834, 72.929, 72.823, 72.823, 72.944, 73.013, 72.977, 72.957, 73.061, 73.091, 73.071, 72.971, 72.955, 72.955, 72.921, 72.921, 72.896, 72.712, 72.673, 72.673, 72.594, 72.594, 72.535, 72.595, 72.805, 72.864, 72.864, 72.864, 72.761, 72.893, 72.946, 72.926, 72.887, 72.882, 72.984, 72.984, 72.993, 73.012, 72.858, 72.867, 72.867, 72.867, 72.862, 72.785, 72.761, 72.722, 72.665, 72.718, 72.732, 72.732, 72.466, 72.466, 72.461, 72.443, 72.424, 72.31, 72.292, 72.325, 72.268, 72.212, 72.245, 72.227, 71.89, 71.89, 71.757, 71.757, 71.572, 71.553, 71.608, 71.59, 71.637, 72.38, 72.372, 72.28, 72.312, 72.409, 72.318, 72.318, 72.35, 72.277, 72.091, 72.115, 72.111, 72.074, 72.222, 71.958, 71.922, 71.883, 71.829, 71.794, 71.598, 71.545, 71.545, 88.268, 88.268, 88.235, 88.235, 88.197, 88.165, 88.17, 88.053, 88.029, 88.002, 88.002, 87.993, 87.968, 87.968, 87.985, 87.958, 87.944, 87.894, 87.84, 87.862, 87.836, 87.836, 87.688, 87.688, 87.694, 87.672, 87.691, 87.691, 87.578, 87.523, 87.487, 87.487, 87.487, 87.469, 87.469, 87.443, 87.425, 87.43, 87.43, 87.394, 87.375, 87.357, 87.176, 87.158, 87.122, 87.122, 87.122, 87.068, 87.05, 87.055, 86.93, 86.912, 86.912, 86.876, 86.858, 86.822, 86.827, 86.642, 86.606, 86.571, 86.418, 86.388, 86.352, 86.335, 86.141, 85.755, 85.755, 85.685, 85.563, 85.546, 85.546, 85.546, 85.529, 85.529, 85.512, 85.518, 85.518, 85.501, 85.489, 85.547, 85.547, 85.501, 85.432, 85.438, 85.421, 85.427, 85.41, 85.393, 85.324, 85.325, 85.296, 85.268, 85.268, 84.956, 84.888, 84.855, 85.145, 85.128, 85.128, 94.557, 94.346, 94.348, 94.315, 94.178, 94.113, 94.098, 93.981, 93.966, 93.927, 93.927, 93.14, 93.085, 93.085, 93.07, 93.059, 93.027, 92.999, 92.985, 92.884, 92.87, 92.873, 92.825, 92.825, 92.907, 92.898, 92.927, 92.927, 92.965, 92.949, 92.973, 92.486, 92.382, 92.392, 92.327, 92.33, 92.215, 92.215, 92.166, 92.196, 92.134, 92.102, 91.819, 91.803, 91.725, 91.725, 91.658, 91.642, 91.562, 91.546, 91.53, 91.466, 91.434, 91.418, 91.37, 91.392, 91.392, 91.379, 91.379, 91.318, 91.286, 91.238, 91.276, 91.26, 91.229, 91.263, 91.266, 91.266, 91.25, 91.209, 91.212, 91.212, 91.117, 91.016, 91.019, 91.003, 91.003, 90.991, 90.975, 91.047, 90.893, 90.881, 90.865, 90.881, 90.865, 90.884, 90.862, 90.816, 90.769, 90.769, 90.772, 90.757, 91.915, 91.907, 91.907, 91.934, 91.918, 91.77, 91.757, 91.815, 91.831, 91.754, 91.703, 91.703, 91.721, 91.705, 91.68, 91.665, 91.661, 91.649, 91.634, 91.618, 91.583, 91.598, 91.585, 91.573, 91.546, 91.548, 91.437, 91.422, 91.392, 91.29, 91.26, 91.22, 91.262, 91.175, 91.192, 91.162, 91.102, 90.998, 90.865, 90.835, 90.782, 90.791, 90.782, 90.752, 90.676, 90.682, 90.651, 90.625, 90.628, 90.57, 90.555, 90.55, 90.478, 90.463, 90.452, 90.437, 90.437, 90.098, 90.093, 90.093, 90.467, 90.467, 90.467, 90.453, 90.478, 92.887, 92.858, 92.858, 92.716, 92.588, 92.367, 89.551, 89.54, 89.54, 89.467, 89.456, 89.456, 89.413, 89.302, 89.455],
+        spanGaps: false,
+    },
+    {
+        label: "F-Score (covered, in percent)",
+        fill: false,
+        lineTension: 0.1,
+        backgroundColor: "rgba(68, 255, 0,0.4)",
+        borderColor: "rgba(68, 255, 0,1)",
+        borderCapStyle: 'butt',
+        borderDash: [],
+        borderDashOffset: 0.0,
+        borderJoinStyle: 'miter',
+        pointBorderColor: "rgba(68, 255, 0,1)",
+        pointBackgroundColor: "#fff",
+        pointBorderWidth: 1,
+        pointHoverRadius: 5,
+        pointHoverBackgroundColor: "rgba(68, 255, 0,1)",
+        pointHoverBorderColor: "rgba(220,220,220,1)",
+        pointHoverBorderWidth: 2,
+        pointRadius: 3,
+        pointHitRadius: 20,
+        data: [97.483, 97.483, 97.483, 97.483, 97.483, 90.395, 89.895, 89.865, 89.713, 85.673, 85.795, 85.58, 85.401, 86.065, 86.511, 86.541, 86.909, 87.65, 87.677, 87.677, 92.611, 95.841, 96.816, 97.023, 97.038, 97.043, 97.033, 96.73, 96.664, 93.388, 96.437, 96.552, 96.341, 96.183, 96.183, 96.183, 96.189, 96.116, 96.28, 96.264, 96.259, 96.259, 94.625, 95.836, 96.039, 96.676, 96.448, 96.387, 96.327, 96.4, 96.41, 96.414, 96.433, 96.433, 96.489, 96.287, 96.101, 96.11, 95.87, 95.771, 95.733, 95.733, 95.615, 94.563, 93.988, 94.002, 95.156, 95.135, 95.14, 95.162, 95.13, 94.435, 94.448, 94.46, 94.472, 94.229, 94.229, 94.241, 94.241, 94.241, 94.189, 94.105, 94.105, 94.008, 94.034, 95.677, 95.686, 95.725, 95.445, 95.238, 95.238, 95.238, 95.624, 95.643, 95.643, 95.643, 95.648, 95.606, 95.606, 95.104, 95.13, 95.145, 95.16, 95.194, 95.243, 94.985, 94.932, 94.895, 94.91, 94.94, 94.623, 95.155, 95.178, 95.178, 95.079, 95.179, 95.093, 94.091, 94.022, 94.033, 94.033, 94.159, 94.185, 94.333, 94.348, 94.428, 94.153, 94.212, 94.212, 94.904, 94.825, 94.825, 94.93, 94.93, 95.0, 95.012, 95.02, 95.02, 94.868, 94.868, 94.887, 94.887, 94.887, 94.963, 94.934, 94.961, 94.992, 94.945, 94.949, 94.585, 94.562, 94.32, 94.267, 94.199, 94.211, 94.211, 94.181, 94.181, 94.181, 94.181, 94.152, 94.152, 94.152, 94.164, 94.253, 94.257, 94.257, 94.24, 94.231, 94.21, 94.176, 94.172, 94.147, 94.147, 94.147, 94.159, 94.159, 94.155, 94.155, 94.159, 94.163, 94.163, 94.163, 94.163, 94.163, 94.13, 94.147, 94.199, 94.215, 94.215, 94.215, 94.024, 94.223, 94.211, 94.211, 94.211, 94.182, 94.194, 94.194, 94.202, 94.202, 94.073, 94.049, 94.049, 94.049, 94.021, 93.957, 93.961, 93.978, 93.978, 93.966, 93.97, 93.97, 93.907, 93.907, 93.911, 93.911, 93.879, 93.689, 93.689, 93.693, 93.693, 93.693, 93.697, 93.697, 93.697, 93.697, 93.544, 93.544, 93.544, 93.544, 93.566, 93.566, 93.574, 93.618, 93.596, 93.565, 93.57, 93.582, 93.521, 93.521, 93.525, 93.495, 93.438, 93.42, 93.394, 93.394, 93.368, 92.99, 92.96, 92.965, 92.965, 92.935, 92.905, 92.816, 92.816, 93.576, 93.576, 93.579, 93.579, 93.537, 93.497, 93.5, 93.488, 93.463, 93.448, 93.448, 93.433, 93.345, 93.345, 93.366, 93.372, 93.375, 93.378, 93.306, 93.455, 93.461, 93.461, 93.461, 93.461, 93.464, 93.535, 93.556, 93.556, 93.523, 93.502, 93.502, 93.502, 93.502, 93.482, 93.482, 93.487, 93.487, 93.47, 93.47, 93.47, 93.47, 93.47, 93.407, 93.407, 93.407, 93.407, 93.407, 93.387, 93.387, 93.39, 93.39, 93.39, 93.39, 93.39, 93.39, 93.348, 93.351, 93.357, 93.336, 93.316, 93.31, 93.313, 93.313, 93.292, 93.271, 93.086, 93.086, 93.045, 93.024, 93.024, 93.024, 93.024, 93.024, 93.034, 93.034, 93.037, 93.037, 93.025, 93.028, 93.081, 93.081, 93.085, 93.085, 93.088, 93.088, 93.091, 93.1, 93.1, 93.059, 93.068, 93.071, 93.074, 93.074, 92.828, 92.828, 92.787, 93.13, 93.13, 93.13, 97.579, 97.43, 97.431, 97.414, 97.34, 97.324, 97.306, 97.271, 97.272, 97.27, 97.27, 97.105, 97.037, 97.037, 97.02, 97.022, 97.023, 97.026, 96.99, 96.917, 96.918, 96.92, 96.921, 96.921, 96.928, 96.913, 96.901, 96.901, 96.918, 96.9, 96.921, 96.932, 96.937, 96.96, 96.96, 96.961, 96.961, 96.961, 96.961, 96.973, 96.974, 96.974, 96.924, 96.924, 96.907, 96.907, 96.906, 96.906, 96.834, 96.834, 96.834, 96.834, 96.834, 96.834, 96.816, 96.818, 96.818, 96.82, 96.82, 96.785, 96.785, 96.785, 96.787, 96.769, 96.769, 96.777, 96.778, 96.778, 96.778, 96.762, 96.764, 96.764, 96.764, 96.678, 96.68, 96.662, 96.662, 96.645, 96.645, 96.62, 96.533, 96.517, 96.523, 96.558, 96.54, 96.542, 96.528, 96.528, 96.528, 96.528, 96.529, 96.529, 95.846, 95.833, 95.833, 95.822, 95.822, 95.758, 95.743, 95.758, 95.775, 95.708, 95.672, 95.672, 95.69, 95.69, 95.676, 95.627, 95.633, 95.634, 95.634, 95.634, 95.631, 95.648, 95.633, 95.618, 95.619, 95.621, 95.601, 95.601, 95.585, 95.513, 95.496, 95.507, 95.571, 95.523, 95.524, 95.508, 95.475, 95.475, 95.475, 95.475, 95.445, 95.45, 95.453, 95.453, 95.362, 95.365, 95.371, 95.372, 95.374, 95.374, 95.374, 95.322, 95.306, 95.306, 95.307, 95.307, 95.307, 94.959, 94.948, 94.948, 95.347, 95.347, 95.347, 95.347, 95.368, 96.477, 96.477, 96.477, 96.368, 96.338, 96.303, 96.072, 96.072, 96.072, 96.049, 96.049, 96.049, 96.049, 95.944, 96.136],
+        spanGaps: false,
+    },
+    {
+        label: "False Positive Rate",
+        fill: false,
+        lineTension: 0.1,
+        backgroundColor: "rgba(192, 0, 0,0.4)",
+        borderColor: "rgba(192, 0, 0,1)",
+        borderCapStyle: 'butt',
+        borderDash: [],
+        borderDashOffset: 0.0,
+        borderJoinStyle: 'miter',
+        pointBorderColor: "rgba(192, 0, 0,1)",
+        pointBackgroundColor: "#fff",
+        pointBorderWidth: 1,
+        pointHoverRadius: 5,
+        pointHoverBackgroundColor: "rgba(192, 0, 0,1)",
+        pointHoverBorderColor: "rgba(220,220,220,1)",
+        pointHoverBorderWidth: 2,
+        pointRadius: 3,
+        pointHitRadius: 20,
+        data: [0.413, 0.409, 0.41, 0.41, 0.409, 0.439, 0.426, 0.426, 0.425, 1.479, 1.473, 0.856, 1.149, 0.324, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 3.898, 0.0, 0.161, 0.805, 0.805, 0.805, 0.801, 0.8, 0.797, 0.826, 0.796, 0.795, 0.78, 2.879, 1.52, 0.77, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.295, 0.294, 0.439, 0.439, 0.439, 3.134, 4.566, 4.539, 2.95, 2.928, 2.924, 2.924, 2.924, 4.644, 4.638, 4.638, 4.624, 4.755, 4.748, 4.681, 4.681, 4.681, 4.816, 4.816, 4.795, 4.755, 4.755, 0.0, 0.0, 0.0, 0.385, 0.64, 0.639, 0.639, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.195, 1.189, 1.18, 1.176, 1.176, 1.176, 1.56, 1.56, 1.562, 1.562, 1.56, 1.577, 1.598, 1.609, 1.609, 1.877, 1.48, 1.74, 2.789, 2.815, 2.807, 2.713, 2.807, 2.811, 2.807, 2.781, 2.523, 2.517, 2.493, 2.493, 2.706, 2.692, 2.685, 2.685, 2.662, 2.662, 2.662, 2.662, 2.662, 2.733, 2.726, 2.785, 2.676, 2.628, 2.622, 2.619, 2.616, 2.635, 2.854, 2.83, 3.049, 3.056, 3.121, 3.173, 3.161, 3.149, 3.137, 3.113, 3.079, 3.075, 3.016, 3.012, 3.005, 2.998, 2.998, 2.754, 2.735, 2.735, 2.748, 2.748, 2.738, 2.738, 2.741, 2.745, 2.741, 2.725, 2.715, 2.715, 2.712, 2.712, 2.706, 2.674, 2.668, 2.668, 2.656, 2.656, 2.65, 2.65, 2.653, 2.653, 2.653, 2.653, 3.322, 2.653, 2.653, 2.65, 2.644, 2.755, 2.765, 2.765, 2.762, 2.765, 2.752, 2.752, 2.752, 2.752, 2.752, 2.746, 2.74, 2.724, 2.715, 2.715, 2.715, 2.715, 2.679, 2.679, 2.676, 2.673, 2.673, 2.673, 2.67, 2.673, 2.664, 2.655, 2.658, 2.655, 2.603, 2.603, 3.122, 3.122, 3.088, 3.085, 3.082, 3.079, 3.082, 3.159, 3.156, 3.142, 3.145, 3.156, 3.145, 3.145, 3.149, 3.247, 3.43, 3.43, 3.43, 3.422, 3.437, 3.846, 3.842, 3.83, 3.818, 3.814, 3.774, 3.874, 3.874, 12.838, 12.838, 12.752, 12.752, 13.043, 13.043, 13.043, 12.787, 12.787, 12.745, 12.745, 13.029, 14.239, 14.239, 14.194, 14.103, 14.058, 13.924, 13.924, 12.063, 11.987, 11.987, 11.692, 11.692, 11.692, 11.515, 11.515, 11.515, 11.343, 11.573, 11.504, 11.504, 11.504, 11.504, 11.504, 11.437, 11.404, 11.437, 11.437, 11.37, 11.337, 11.304, 11.615, 11.582, 11.517, 11.517, 11.517, 11.453, 11.421, 11.421, 11.202, 11.172, 11.172, 11.111, 11.081, 11.081, 11.081, 10.761, 10.733, 10.705, 10.486, 10.433, 10.38, 10.38, 10.37, 12.085, 12.085, 12.264, 12.093, 12.065, 12.065, 12.065, 12.037, 12.009, 11.982, 11.982, 11.982, 11.954, 11.927, 11.927, 11.927, 11.845, 11.738, 11.738, 11.712, 11.712, 11.659, 11.633, 12.0, 11.973, 11.921, 11.868, 11.868, 13.22, 13.108, 13.291, 11.398, 11.373, 11.373, 22.897, 22.477, 22.477, 22.374, 22.422, 22.566, 22.566, 22.414, 22.318, 22.128, 22.128, 21.245, 21.245, 21.245, 21.245, 21.168, 21.014, 20.863, 21.223, 21.352, 21.277, 21.277, 21.053, 21.053, 21.352, 21.352, 21.505, 21.505, 21.505, 21.505, 21.505, 18.893, 18.471, 18.413, 18.182, 18.182, 17.791, 17.791, 17.629, 17.629, 17.417, 17.313, 16.809, 16.761, 16.807, 16.807, 16.62, 16.575, 17.033, 16.986, 16.94, 16.757, 16.667, 16.622, 16.533, 16.578, 16.578, 16.533, 16.533, 16.931, 16.842, 16.71, 16.798, 16.798, 16.71, 16.754, 16.754, 16.754, 16.71, 16.623, 16.623, 16.623, 16.368, 16.285, 16.285, 16.285, 16.285, 16.285, 16.244, 16.452, 16.497, 16.497, 16.414, 16.373, 16.373, 16.414, 16.373, 16.25, 16.129, 16.129, 16.129, 16.089, 26.266, 26.498, 26.498, 26.984, 26.899, 27.301, 27.301, 27.469, 27.469, 27.692, 27.523, 27.523, 27.523, 27.439, 27.356, 27.66, 25.387, 25.309, 25.231, 25.153, 23.839, 23.602, 23.602, 23.602, 23.457, 23.457, 23.03, 22.961, 23.193, 23.653, 23.582, 23.304, 22.321, 22.124, 22.124, 22.059, 21.93, 21.49, 20.95, 20.833, 20.718, 20.718, 20.661, 20.548, 20.765, 20.765, 20.811, 20.699, 20.699, 20.479, 20.424, 20.955, 20.997, 20.942, 20.888, 20.833, 20.833, 23.367, 23.367, 23.367, 20.366, 20.366, 20.366, 20.312, 20.26, 21.886, 21.739, 21.739, 22.039, 22.115, 21.166, 15.039, 15.015, 15.015, 15.008, 14.985, 14.985, 14.894, 14.826, 14.737],
+        spanGaps: false,
+    },
+    {
+        label: "False Negative Rate",
+        fill: false,
+        lineTension: 0.1,
+        backgroundColor: "rgba(224, 128, 0,0.4)",
+        borderColor: "rgba(224, 128, 0,1)",
+        borderCapStyle: 'butt',
+        borderDash: [],
+        borderDashOffset: 0.0,
+        borderJoinStyle: 'miter',
+        pointBorderColor: "rgba(224, 128, 0,1)",
+        pointBackgroundColor: "#fff",
+        pointBorderWidth: 1,
+        pointHoverRadius: 5,
+        pointHoverBackgroundColor: "rgba(224, 128, 0,1)",
+        pointHoverBorderColor: "rgba(220,220,220,1)",
+        pointHoverBorderWidth: 2,
+        pointRadius: 3,
+        pointHitRadius: 20,
+        data: [3.62, 3.62, 3.62, 3.62, 3.62, 16.667, 17.572, 17.647, 17.901, 22.135, 21.964, 24.431, 24.172, 23.866, 23.772, 23.725, 23.152, 21.984, 21.942, 21.942, 13.761, 7.985, 6.171, 5.782, 5.753, 5.743, 5.763, 6.333, 6.457, 6.919, 6.88, 6.525, 6.37, 6.667, 6.667, 6.667, 6.657, 6.795, 6.516, 6.555, 6.564, 6.564, 6.564, 6.474, 6.999, 6.434, 6.86, 6.974, 7.087, 6.95, 6.932, 6.923, 6.888, 6.888, 6.784, 7.161, 7.506, 7.488, 7.711, 7.895, 7.857, 7.857, 8.076, 8.152, 8.239, 8.221, 7.199, 7.254, 7.246, 7.214, 7.285, 7.387, 7.371, 7.355, 7.338, 7.717, 7.717, 7.701, 7.701, 7.701, 7.701, 7.875, 7.875, 8.065, 8.03, 8.288, 8.271, 8.2, 8.238, 8.238, 8.238, 8.238, 8.385, 8.351, 8.351, 8.351, 8.342, 8.418, 8.418, 8.517, 8.475, 8.449, 8.424, 8.366, 8.285, 8.502, 8.599, 8.671, 8.646, 8.596, 9.186, 8.224, 8.186, 8.186, 8.21, 8.28, 8.272, 8.0, 8.165, 8.151, 8.151, 7.983, 7.949, 7.75, 7.731, 7.731, 8.258, 8.155, 8.155, 6.579, 6.732, 6.732, 6.597, 6.597, 6.508, 6.492, 6.482, 6.482, 6.703, 6.703, 6.703, 6.703, 6.703, 6.605, 6.667, 6.631, 6.591, 6.582, 6.577, 7.273, 7.324, 7.808, 7.938, 8.068, 8.051, 8.051, 8.11, 8.11, 8.11, 8.11, 8.169, 8.169, 8.169, 8.152, 8.123, 8.118, 8.118, 8.159, 8.189, 8.235, 8.299, 8.322, 8.373, 8.373, 8.373, 8.356, 8.356, 8.362, 8.362, 8.356, 8.35, 8.35, 8.35, 8.35, 8.35, 8.413, 8.39, 8.316, 8.294, 8.294, 8.294, 8.288, 8.283, 8.317, 8.317, 8.317, 8.311, 8.294, 8.294, 8.283, 8.283, 8.528, 8.577, 8.577, 8.577, 8.632, 8.753, 8.748, 8.724, 8.724, 8.756, 8.75, 8.75, 8.87, 8.87, 8.864, 8.864, 8.924, 9.281, 9.281, 9.275, 9.275, 9.275, 9.269, 9.269, 9.269, 9.269, 9.263, 9.263, 9.263, 9.263, 9.233, 9.233, 9.221, 9.19, 9.236, 9.293, 9.288, 9.27, 9.385, 9.385, 9.379, 9.379, 9.373, 9.413, 9.464, 9.464, 9.53, 10.019, 10.075, 10.068, 10.068, 10.124, 10.18, 10.236, 10.236, 9.714, 9.714, 9.71, 9.71, 9.71, 9.785, 9.781, 9.807, 9.851, 9.882, 9.882, 9.873, 9.887, 9.887, 9.857, 9.848, 9.844, 9.84, 9.978, 10.022, 10.013, 10.013, 10.013, 10.013, 10.009, 9.88, 9.841, 9.841, 9.906, 9.906, 9.906, 9.906, 9.906, 9.944, 9.944, 9.936, 9.936, 9.97, 9.97, 9.97, 9.97, 9.97, 9.97, 9.97, 9.97, 9.97, 9.97, 10.009, 10.009, 10.004, 10.004, 10.004, 10.004, 10.004, 10.004, 10.081, 10.077, 10.068, 10.107, 10.145, 10.154, 10.149, 10.149, 10.188, 10.188, 10.188, 10.188, 10.226, 10.264, 10.264, 10.264, 10.264, 10.264, 10.251, 10.251, 10.247, 10.247, 10.272, 10.267, 10.174, 10.174, 10.169, 10.169, 10.165, 10.165, 10.161, 10.148, 10.148, 10.148, 10.135, 10.131, 10.127, 10.127, 10.131, 10.131, 10.131, 10.105, 10.105, 10.105, 2.935, 3.228, 3.227, 3.262, 3.371, 3.368, 3.403, 3.402, 3.401, 3.403, 3.403, 3.425, 3.563, 3.563, 3.598, 3.596, 3.594, 3.591, 3.59, 3.662, 3.661, 3.659, 3.658, 3.658, 3.65, 3.682, 3.711, 3.711, 3.69, 3.726, 3.686, 3.716, 3.711, 3.669, 3.669, 3.668, 3.668, 3.668, 3.668, 3.653, 3.652, 3.652, 3.683, 3.683, 3.682, 3.682, 3.683, 3.683, 3.754, 3.754, 3.754, 3.754, 3.754, 3.754, 3.79, 3.787, 3.787, 3.785, 3.785, 3.784, 3.784, 3.784, 3.781, 3.817, 3.817, 3.808, 3.807, 3.807, 3.807, 3.839, 3.838, 3.838, 3.838, 4.009, 4.007, 4.042, 4.042, 4.076, 4.076, 4.133, 4.271, 4.304, 4.296, 4.227, 4.261, 4.26, 4.29, 4.29, 4.29, 4.29, 4.288, 4.288, 5.102, 5.097, 5.097, 5.09, 5.09, 5.087, 5.118, 5.1, 5.067, 5.165, 5.247, 5.247, 5.213, 5.213, 5.242, 5.319, 5.59, 5.588, 5.588, 5.588, 5.72, 5.72, 5.75, 5.78, 5.778, 5.776, 5.812, 5.812, 5.812, 5.884, 5.916, 5.902, 5.936, 6.03, 6.039, 6.071, 6.134, 6.134, 6.134, 6.134, 6.193, 6.187, 6.183, 6.183, 6.3, 6.296, 6.267, 6.265, 6.262, 6.262, 6.262, 6.308, 6.308, 6.308, 6.306, 6.306, 6.306, 6.352, 6.377, 6.377, 6.358, 6.358, 6.358, 6.358, 6.33, 4.623, 4.623, 4.623, 4.713, 4.712, 4.788, 5.006, 5.006, 5.006, 5.037, 5.037, 5.037, 5.037, 5.247, 4.884],
+        spanGaps: false,
+    }
+]
+    },
+    options: {
+        maintainAspectRatio:true,
+        title: {
+            display: true,
+            text: 'YARA Accuracy'
+        },
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+    }
+});
+var ctx = document.getElementById("myGrowthChart");
+var myGrowthChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: [
+                
+                    "2017-05-01",
+                
+                    "2017-05-03",
+                
+                    "2017-05-09",
+                
+                    "2017-05-10",
+                
+                    "2017-05-11",
+                
+                    "2017-05-12",
+                
+                    "2017-05-13",
+                
+                    "2017-05-16",
+                
+                    "2017-05-17",
+                
+                    "2017-05-18",
+                
+                    "2017-05-19",
+                
+                    "2017-05-20",
+                
+                    "2017-05-21",
+                
+                    "2017-05-22",
+                
+                    "2017-05-23",
+                
+                    "2017-05-23",
+                
+                    "2017-05-29",
+                
+                    "2017-05-30",
+                
+                    "2017-05-31",
+                
+                    "2017-06-01",
+                
+                    "2017-06-02",
+                
+                    "2017-06-03",
+                
+                    "2017-06-05",
+                
+                    "2017-06-06",
+                
+                    "2017-06-07",
+                
+                    "2017-06-08",
+                
+                    "2017-06-09",
+                
+                    "2017-06-12",
+                
+                    "2017-06-13",
+                
+                    "2017-06-14",
+                
+                    "2017-06-15",
+                
+                    "2017-06-24",
+                
+                    "2017-07-05",
+                
+                    "2017-07-07",
+                
+                    "2017-07-09",
+                
+                    "2017-07-11",
+                
+                    "2017-07-12",
+                
+                    "2017-07-17",
+                
+                    "2017-07-18",
+                
+                    "2017-07-19",
+                
+                    "2017-07-26",
+                
+                    "2017-07-29",
+                
+                    "2017-08-01",
+                
+                    "2017-08-02",
+                
+                    "2017-08-03",
+                
+                    "2017-08-04",
+                
+                    "2017-08-07",
+                
+                    "2017-08-08",
+                
+                    "2017-08-10",
+                
+                    "2017-08-22",
+                
+                    "2017-08-26",
+                
+                    "2017-08-28",
+                
+                    "2017-08-31",
+                
+                    "2017-09-01",
+                
+                    "2017-09-06",
+                
+                    "2017-09-07",
+                
+                    "2017-09-09",
+                
+                    "2017-09-13",
+                
+                    "2017-09-14",
+                
+                    "2017-09-15",
+                
+                    "2017-09-18",
+                
+                    "2017-09-19",
+                
+                    "2017-09-20",
+                
+                    "2017-09-24",
+                
+                    "2017-09-26",
+                
+                    "2017-09-29",
+                
+                    "2017-10-02",
+                
+                    "2017-10-03",
+                
+                    "2017-10-06",
+                
+                    "2017-10-08",
+                
+                    "2017-10-09",
+                
+                    "2017-10-11",
+                
+                    "2017-10-12",
+                
+                    "2017-10-13",
+                
+                    "2017-10-14",
+                
+                    "2017-10-20",
+                
+                    "2017-10-23",
+                
+                    "2017-10-24",
+                
+                    "2017-10-25",
+                
+                    "2017-10-26",
+                
+                    "2017-11-06",
+                
+                    "2017-11-07",
+                
+                    "2017-11-08",
+                
+                    "2017-11-09",
+                
+                    "2017-11-10",
+                
+                    "2017-11-13",
+                
+                    "2017-11-16",
+                
+                    "2017-11-17",
+                
+                    "2017-11-21",
+                
+                    "2017-11-22",
+                
+                    "2017-11-23",
+                
+                    "2017-11-27",
+                
+                    "2017-12-04",
+                
+                    "2017-12-05",
+                
+                    "2017-12-06",
+                
+                    "2017-12-07",
+                
+                    "2017-12-08",
+                
+                    "2017-12-09",
+                
+                    "2017-12-11",
+                
+                    "2017-12-13",
+                
+                    "2017-12-14",
+                
+                    "2017-12-15",
+                
+                    "2017-12-18",
+                
+                    "2017-12-19",
+                
+                    "2017-12-21",
+                
+                    "2017-12-22",
+                
+                    "2017-12-29",
+                
+                    "2017-12-30",
+                
+                    "2018-01-01",
+                
+                    "2018-01-02",
+                
+                    "2018-01-03",
+                
+                    "2018-01-04",
+                
+                    "2018-01-05",
+                
+                    "2018-01-06",
+                
+                    "2018-01-07",
+                
+                    "2018-01-08",
+                
+                    "2018-01-09",
+                
+                    "2018-01-10",
+                
+                    "2018-01-11",
+                
+                    "2018-01-12",
+                
+                    "2018-01-13",
+                
+                    "2018-01-14",
+                
+                    "2018-01-17",
+                
+                    "2018-01-18",
+                
+                    "2018-01-19",
+                
+                    "2018-01-21",
+                
+                    "2018-01-22",
+                
+                    "2018-01-23",
+                
+                    "2018-01-24",
+                
+                    "2018-01-25",
+                
+                    "2018-01-28",
+                
+                    "2018-01-30",
+                
+                    "2018-01-31",
+                
+                    "2018-02-01",
+                
+                    "2018-02-02",
+                
+                    "2018-02-04",
+                
+                    "2018-02-05",
+                
+                    "2018-02-06",
+                
+                    "2018-02-07",
+                
+                    "2018-02-08",
+                
+                    "2018-02-09",
+                
+                    "2018-02-10",
+                
+                    "2018-02-13",
+                
+                    "2018-02-15",
+                
+                    "2018-02-19",
+                
+                    "2018-02-21",
+                
+                    "2018-02-22",
+                
+                    "2018-02-26",
+                
+                    "2018-02-27",
+                
+                    "2018-03-01",
+                
+                    "2018-03-02",
+                
+                    "2018-03-05",
+                
+                    "2018-03-09",
+                
+                    "2018-03-12",
+                
+                    "2018-03-13",
+                
+                    "2018-03-14",
+                
+                    "2018-03-15",
+                
+                    "2018-03-16",
+                
+                    "2018-03-17",
+                
+                    "2018-03-19",
+                
+                    "2018-03-20",
+                
+                    "2018-03-21",
+                
+                    "2018-03-22",
+                
+                    "2018-03-23",
+                
+                    "2018-03-26",
+                
+                    "2018-03-27",
+                
+                    "2018-03-28",
+                
+                    "2018-03-31",
+                
+                    "2018-04-12",
+                
+                    "2018-04-13",
+                
+                    "2018-04-14",
+                
+                    "2018-04-17",
+                
+                    "2018-04-18",
+                
+                    "2018-04-20",
+                
+                    "2018-04-23",
+                
+                    "2018-04-24",
+                
+                    "2018-04-25",
+                
+                    "2018-04-26",
+                
+                    "2018-04-27",
+                
+                    "2018-05-02",
+                
+                    "2018-05-03",
+                
+                    "2018-05-08",
+                
+                    "2018-05-11",
+                
+                    "2018-05-14",
+                
+                    "2018-05-16",
+                
+                    "2018-05-17",
+                
+                    "2018-05-23",
+                
+                    "2018-05-28",
+                
+                    "2018-05-29",
+                
+                    "2018-05-30",
+                
+                    "2018-06-05",
+                
+                    "2018-06-06",
+                
+                    "2018-06-07",
+                
+                    "2018-06-13",
+                
+                    "2018-06-14",
+                
+                    "2018-06-19",
+                
+                    "2018-06-20",
+                
+                    "2018-06-21",
+                
+                    "2018-06-24",
+                
+                    "2018-06-25",
+                
+                    "2018-06-26",
+                
+                    "2018-06-28",
+                
+                    "2018-07-03",
+                
+                    "2018-07-05",
+                
+                    "2018-07-06",
+                
+                    "2018-07-09",
+                
+                    "2018-07-10",
+                
+                    "2018-07-11",
+                
+                    "2018-07-23",
+                
+                    "2018-07-24",
+                
+                    "2018-07-26",
+                
+                    "2018-07-31",
+                
+                    "2018-08-01",
+                
+                    "2018-08-03",
+                
+                    "2018-08-06",
+                
+                    "2018-08-09",
+                
+                    "2018-08-10",
+                
+                    "2018-08-14",
+                
+                    "2018-08-20",
+                
+                    "2018-08-21",
+                
+                    "2018-08-22",
+                
+                    "2018-08-23",
+                
+                    "2018-08-31",
+                
+                    "2018-09-03",
+                
+                    "2018-09-05",
+                
+                    "2018-09-06",
+                
+                    "2018-09-07",
+                
+                    "2018-09-11",
+                
+                    "2018-09-12",
+                
+                    "2018-09-13",
+                
+                    "2018-09-15",
+                
+                    "2018-09-19",
+                
+                    "2018-09-20",
+                
+                    "2018-09-21",
+                
+                    "2018-09-27",
+                
+                    "2018-09-30",
+                
+                    "2018-10-03",
+                
+                    "2018-10-04",
+                
+                    "2018-10-09",
+                
+                    "2018-10-18",
+                
+                    "2018-10-19",
+                
+                    "2018-10-22",
+                
+                    "2018-10-23",
+                
+                    "2018-10-24",
+                
+                    "2018-10-25",
+                
+                    "2018-10-26",
+                
+                    "2018-11-02",
+                
+                    "2018-11-05",
+                
+                    "2018-11-07",
+                
+                    "2018-11-08",
+                
+                    "2018-11-13",
+                
+                    "2018-11-14",
+                
+                    "2018-11-16",
+                
+                    "2018-11-20",
+                
+                    "2018-11-21",
+                
+                    "2018-11-23",
+                
+                    "2018-11-25",
+                
+                    "2018-11-27",
+                
+                    "2018-11-29",
+                
+                    "2018-12-02",
+                
+                    "2018-12-11",
+                
+                    "2018-12-20",
+                
+                    "2018-12-28",
+                
+                    "2018-12-31",
+                
+                    "2019-01-03",
+                
+                    "2019-01-04",
+                
+                    "2019-01-05",
+                
+                    "2019-01-07",
+                
+                    "2019-01-10",
+                
+                    "2019-01-12",
+                
+                    "2019-01-13",
+                
+                    "2019-01-15",
+                
+                    "2019-01-16",
+                
+                    "2019-01-17",
+                
+                    "2019-01-18",
+                
+                    "2019-01-19",
+                
+                    "2019-01-21",
+                
+                    "2019-01-22",
+                
+                    "2019-01-24",
+                
+                    "2019-01-26",
+                
+                    "2019-01-30",
+                
+                    "2019-01-31",
+                
+                    "2019-02-01",
+                
+                    "2019-02-04",
+                
+                    "2019-02-06",
+                
+                    "2019-02-08",
+                
+                    "2019-02-14",
+                
+                    "2019-02-15",
+                
+                    "2019-02-19",
+                
+                    "2019-02-20",
+                
+                    "2019-02-21",
+                
+                    "2019-02-23",
+                
+                    "2019-02-25",
+                
+                    "2019-02-26",
+                
+                    "2019-02-27",
+                
+                    "2019-02-28",
+                
+                    "2019-03-02",
+                
+                    "2019-03-07",
+                
+                    "2019-03-08",
+                
+                    "2019-03-10",
+                
+                    "2019-03-12",
+                
+                    "2019-03-13",
+                
+                    "2019-03-14",
+                
+                    "2019-03-15",
+                
+                    "2019-03-16",
+                
+                    "2019-03-21",
+                
+                    "2019-03-22",
+                
+                    "2019-03-26",
+                
+                    "2019-03-27",
+                
+                    "2019-03-28",
+                
+                    "2019-03-30",
+                
+                    "2019-04-01",
+                
+                    "2019-04-03",
+                
+                    "2019-04-04",
+                
+                    "2019-04-05",
+                
+                    "2019-04-08",
+                
+                    "2019-04-09",
+                
+                    "2019-04-12",
+                
+                    "2019-04-13",
+                
+                    "2019-04-17",
+                
+                    "2019-04-18",
+                
+                    "2019-04-19",
+                
+                    "2019-04-20",
+                
+                    "2019-04-24",
+                
+                    "2019-04-25",
+                
+                    "2019-04-27",
+                
+                    "2019-04-28",
+                
+                    "2019-04-30",
+                
+                    "2019-05-03",
+                
+                    "2019-05-04",
+                
+                    "2019-05-08",
+                
+                    "2019-05-09",
+                
+                    "2019-05-10",
+                
+                    "2019-05-11",
+                
+                    "2019-05-16",
+                
+                    "2019-05-17",
+                
+                    "2019-05-18",
+                
+                    "2019-05-19",
+                
+                    "2019-05-21",
+                
+                    "2019-05-22",
+                
+                    "2019-05-24",
+                
+                    "2019-05-25",
+                
+                    "2019-05-31",
+                
+                    "2019-06-03",
+                
+                    "2019-06-05",
+                
+                    "2019-06-13",
+                
+                    "2019-06-15",
+                
+                    "2019-06-18",
+                
+                    "2019-06-19",
+                
+                    "2019-06-22",
+                
+                    "2019-06-24",
+                
+                    "2019-06-25",
+                
+                    "2019-06-27",
+                
+                    "2019-06-28",
+                
+                    "2019-07-03",
+                
+                    "2019-07-06",
+                
+                    "2019-07-09",
+                
+                    "2019-07-10",
+                
+                    "2019-07-11",
+                
+                    "2019-07-12",
+                
+                    "2019-07-13",
+                
+                    "2019-07-17",
+                
+                    "2019-07-24",
+                
+                    "2019-07-25",
+                
+                    "2019-07-26",
+                
+                    "2019-07-30",
+                
+                    "2019-08-01",
+                
+                    "2019-08-03",
+                
+                    "2019-08-04",
+                
+                    "2019-08-05",
+                
+                    "2019-08-08",
+                
+                    "2019-08-10",
+                
+                    "2019-08-13",
+                
+                    "2019-08-14",
+                
+                    "2019-08-15",
+                
+                    "2019-08-16",
+                
+                    "2019-08-17",
+                
+                    "2019-08-20",
+                
+                    "2019-08-21",
+                
+                    "2019-08-23",
+                
+                    "2019-08-24",
+                
+                    "2019-08-27",
+                
+                    "2019-08-28",
+                
+                    "2019-08-29",
+                
+                    "2019-08-30",
+                
+                    "2019-08-31",
+                
+                    "2019-09-03",
+                
+                    "2019-09-04",
+                
+                    "2019-09-06",
+                
+                    "2019-09-07",
+                
+                    "2019-09-09",
+                
+                    "2019-09-10",
+                
+                    "2019-09-11",
+                
+                    "2019-09-14",
+                
+                    "2019-09-17",
+                
+                    "2019-09-20",
+                
+                    "2019-10-01",
+                
+                    "2019-10-05",
+                
+                    "2019-10-09",
+                
+                    "2019-10-10",
+                
+                    "2019-10-11",
+                
+                    "2019-10-13",
+                
+                    "2019-10-14",
+                
+                    "2019-10-15",
+                
+                    "2019-10-17",
+                
+                    "2019-10-18",
+                
+                    "2019-10-19",
+                
+                    "2019-10-22",
+                
+                    "2019-10-24",
+                
+                    "2019-10-25",
+                
+                    "2019-10-26",
+                
+                    "2019-10-29",
+                
+                    "2019-10-30",
+                
+                    "2019-10-31",
+                
+                    "2019-11-01",
+                
+                    "2019-11-04",
+                
+                    "2019-11-05",
+                
+                    "2019-11-06",
+                
+                    "2019-11-07",
+                
+                    "2019-11-13",
+                
+                    "2019-11-14",
+                
+                    "2019-11-16",
+                
+                    "2019-11-18",
+                
+                    "2019-11-21",
+                
+                    "2019-11-23",
+                
+                    "2019-11-24",
+                
+                    "2019-11-25",
+                
+                    "2019-11-28",
+                
+                    "2019-11-29",
+                
+                    "2019-11-30",
+                
+                    "2019-12-02",
+                
+                    "2019-12-04",
+                
+                    "2019-12-05",
+                
+                    "2019-12-06",
+                
+                    "2019-12-08",
+                
+                    "2019-12-09",
+                
+                    "2019-12-11",
+                
+                    "2019-12-12",
+                
+                    "2019-12-13",
+                
+                    "2019-12-14",
+                
+                    "2019-12-17",
+                
+                    "2019-12-19",
+                
+                    "2019-12-20",
+                
+                    "2019-12-25",
+                
+                    "2019-12-28",
+                
+                    "2019-12-29",
+                
+                    "2019-12-30",
+                
+                    "2020-01-01",
+                
+                    "2020-01-02",
+                
+                    "2020-01-03",
+                
+                    "2020-01-07",
+                
+                    "2020-01-10",
+                
+                    "2020-01-14",
+                
+                    "2020-01-15",
+                
+                    "2020-01-16",
+                
+                    "2020-01-17",
+                
+                    "2020-01-18",
+                
+                    "2020-01-21",
+                
+                    "2020-01-22",
+                
+                    "2020-01-23",
+                
+                    "2020-01-24",
+                
+                    "2020-01-27",
+                
+                    "2020-01-28",
+                
+                    "2020-01-30",
+                
+                    "2020-02-01",
+                
+                    "2020-02-02",
+                
+                    "2020-02-04",
+                
+                    "2020-02-05",
+                
+                    "2020-02-06",
+                
+                    "2020-02-08",
+                
+                    "2020-02-10",
+                
+                    "2020-02-11",
+                
+                    "2020-02-12",
+                
+                    "2020-02-14",
+                
+                    "2020-02-15",
+                
+                    "2020-02-25",
+                
+                    "2020-02-26",
+                
+                    "2020-02-27",
+                
+                    "2020-02-28",
+                
+                    "2020-03-03",
+                
+                    "2020-03-04",
+                
+                    "2020-03-05",
+                
+                    "2020-03-07",
+                
+                    "2020-03-10",
+                
+                    "2020-03-12",
+                
+                    "2020-03-14",
+                
+                    "2020-03-18",
+                
+                    "2020-03-20",
+                
+                    "2020-03-23",
+                
+                    "2020-03-24",
+                
+                    "2020-03-25",
+                
+                    "2020-03-26",
+                
+                    "2020-03-27",
+                
+                    "2020-03-28",
+                
+                    "2020-03-29",
+                
+                    "2020-03-31",
+                
+                    "2020-04-02",
+                
+                    "2020-04-03",
+                
+                    "2020-04-07",
+                
+                    "2020-04-08",
+                
+                    "2020-04-14",
+                
+                    "2020-04-15",
+                
+                    "2020-04-16",
+                
+                    "2020-04-17",
+                
+                    "2020-04-21",
+                
+                    "2020-04-22",
+                
+                    "2020-04-23",
+                
+                    "2020-04-24",
+                
+                    "2020-04-27",
+                
+                    "2020-04-29",
+                
+                    "2020-05-03",
+                
+                    "2020-05-06",
+                
+                    "2020-05-07",
+                
+                    "2020-05-08",
+                
+                    "2020-05-10",
+                
+                    "2020-05-14",
+                
+                    "2020-05-16",
+                
+                    "2020-05-22",
+                
+                    "2022-06-03",
+                
+                    "2022-06-08",
+                
+                    "2022-06-09",
+                
+                    "2022-06-10",
+                
+                    "2022-06-23",
+                
+                    "2022-06-28",
+                
+                    "2022-07-01",
+                
+                    "2022-07-02",
+                
+                    "2022-07-06",
+                
+            ],
+datasets: [
+    {
+        label: "# Samples",
+        fill: false,
+        lineTension: 0.1,
+        backgroundColor: "rgba(160, 200, 0,0.4)",
+        borderColor: "rgba(160, 200, 0,1)",
+        borderCapStyle: 'butt',
+        borderDash: [],
+        borderDashOffset: 0.0,
+        borderJoinStyle: 'miter',
+        pointBorderColor: "rgba(160, 200, 0,1)",
+        pointBackgroundColor: "#fff",
+        pointBorderWidth: 1,
+        pointHoverRadius: 5,
+        pointHoverBackgroundColor: "rgba(160, 200, 0,1)",
+        pointHoverBorderColor: "rgba(220,220,220,1)",
+        pointHoverBorderWidth: 2,
+        pointRadius: 3,
+        pointHitRadius: 20,
+        data: [948, 954, 953, 953, 955, 971, 1018, 1028, 1030, 1058, 1064, 1065, 1120, 1124, 1124, 1127, 1134, 1140, 1144, 1141, 1175, 1194, 1194, 1227, 1227, 1233, 1231, 1241, 1260, 1260, 1266, 1280, 1296, 1296, 1296, 1299, 1301, 1304, 1311, 1345, 1345, 1357, 1372, 1381, 1392, 1396, 1408, 1410, 1412, 1426, 1434, 1435, 1442, 1442, 1454, 1455, 1481, 1483, 1508, 1516, 1523, 1523, 1525, 1537, 1550, 1556, 1561, 1573, 1575, 1579, 1584, 1585, 1588, 1590, 1594, 1602, 1603, 1615, 1615, 1615, 1616, 1621, 1624, 1633, 1637, 1644, 1674, 1700, 1739, 1740, 1741, 1742, 1743, 1747, 1748, 1748, 1749, 1749, 1749, 1751, 1760, 1769, 1774, 1781, 1791, 1803, 1803, 1805, 1808, 1815, 1816, 1820, 1820, 1820, 1829, 1830, 1835, 1878, 1885, 1889, 1915, 1913, 1917, 1948, 1958, 1956, 1966, 1976, 1976, 1992, 1998, 2000, 2025, 2032, 2049, 2052, 2054, 2054, 2073, 2075, 2073, 2105, 2120, 2141, 2145, 2153, 2155, 2178, 2186, 2195, 2197, 2197, 2199, 2204, 2210, 2213, 2221, 2230, 2231, 2247, 2250, 2252, 2254, 2257, 2263, 2270, 2270, 2271, 2278, 2285, 2286, 2293, 2295, 2296, 2301, 2307, 2307, 2307, 2307, 2310, 2321, 2323, 2323, 2327, 2327, 2330, 2334, 2346, 2350, 2350, 2350, 2351, 2352, 2358, 2359, 2361, 2362, 2362, 2362, 2365, 2364, 2372, 2375, 2375, 2375, 2377, 2381, 2384, 2393, 2396, 2402, 2403, 2403, 2417, 2417, 2419, 2420, 2421, 2427, 2428, 2428, 2431, 2434, 2434, 2435, 2453, 2453, 2457, 2457, 2467, 2468, 2474, 2475, 2476, 2480, 2484, 2489, 2489, 2489, 2494, 2494, 2494, 2497, 2507, 2511, 2513, 2515, 2521, 2537, 2539, 2543, 2546, 2548, 2559, 2561, 2561, 2562, 2562, 2565, 2565, 2566, 2569, 2570, 2580, 2580, 2584, 2584, 2586, 2591, 2591, 2599, 2603, 2605, 2609, 2617, 2632, 2636, 2636, 2644, 2644, 2645, 2650, 2649, 2649, 2659, 2661, 2663, 2663, 2663, 2664, 2664, 2668, 2669, 2670, 2670, 2672, 2673, 2674, 2682, 2683, 2685, 2685, 2685, 2688, 2689, 2690, 2697, 2698, 2698, 2700, 2701, 2703, 2704, 2717, 2719, 2721, 2727, 2730, 2732, 2733, 2743, 2756, 2756, 2759, 2766, 2767, 2767, 2767, 2768, 2772, 2773, 2774, 2774, 2779, 2781, 2783, 2783, 2787, 2791, 2792, 2793, 2794, 2799, 2800, 2802, 2806, 2809, 2812, 2812, 2821, 2825, 2826, 2827, 2828, 2828, 2828, 2838, 2839, 2842, 2849, 2854, 2856, 2863, 2865, 2865, 2865, 2886, 2895, 2895, 2897, 2900, 2903, 2907, 2908, 2913, 2915, 2916, 2920, 2920, 2922, 2926, 2930, 2930, 2945, 2946, 2948, 2954, 2965, 2969, 2973, 2974, 2981, 2981, 2984, 2995, 3000, 3002, 3022, 3023, 3028, 3028, 3031, 3032, 3035, 3036, 3037, 3041, 3043, 3044, 3047, 3048, 3048, 3050, 3050, 3053, 3055, 3058, 3058, 3059, 3061, 3066, 3067, 3067, 3068, 3073, 3074, 3074, 3080, 3090, 3091, 3092, 3092, 3094, 3095, 3100, 3110, 3112, 3119, 3118, 3119, 3119, 3124, 3127, 3130, 3130, 3131, 3132, 3132, 3135, 3135, 3137, 3138, 3146, 3148, 3156, 3155, 3159, 3173, 3173, 3173, 3174, 3178, 3191, 3192, 3194, 3195, 3196, 3201, 3201, 3203, 3205, 3208, 3209, 3214, 3215, 3216, 3216, 3218, 3229, 3229, 3236, 3248, 3250, 3254, 3261, 3270, 3272, 3278, 3281, 3284, 3286, 3295, 3297, 3315, 3318, 3319, 3323, 3324, 3332, 3336, 3337, 3339, 3340, 3340, 3342, 3346, 3346, 3346, 3346, 3346, 3347, 3361, 3361, 3363, 3363, 3372, 3380, 3407, 4443, 4444, 4444, 4467, 4468, 4468, 4472, 4491, 4499],
+        spanGaps: false,
+    },
+    {
+        label: "# Samples Covered",
+        fill: false,
+        lineTension: 0.1,
+        backgroundColor: "rgba(92, 120, 0,0.4)",
+        borderColor: "rgba(92, 120, 0,1)",
+        borderCapStyle: 'butt',
+        borderDash: [],
+        borderDashOffset: 0.0,
+        borderJoinStyle: 'miter',
+        pointBorderColor: "rgba(92, 120, 0,1)",
+        pointBackgroundColor: "#fff",
+        pointBorderWidth: 1,
+        pointHoverRadius: 5,
+        pointHoverBackgroundColor: "rgba(92, 120, 0,1)",
+        pointHoverBorderColor: "rgba(220,220,220,1)",
+        pointHoverBorderWidth: 2,
+        pointRadius: 3,
+        pointHitRadius: 20,
+        data: [221, 221, 221, 221, 221, 288, 313, 323, 324, 389, 392, 483, 515, 509, 509, 510, 514, 514, 515, 515, 545, 551, 551, 588, 591, 592, 590, 600, 604, 619, 625, 659, 675, 675, 675, 675, 676, 677, 706, 717, 716, 716, 726, 728, 743, 746, 758, 760, 762, 777, 779, 780, 784, 784, 796, 796, 826, 828, 830, 836, 840, 840, 842, 871, 886, 888, 889, 896, 897, 901, 906, 907, 909, 911, 913, 920, 920, 922, 922, 922, 922, 927, 927, 930, 934, 929, 943, 939, 961, 963, 963, 963, 966, 970, 970, 970, 971, 986, 986, 998, 1003, 1006, 1009, 1016, 1026, 1035, 1035, 1038, 1041, 1047, 1056, 1070, 1075, 1075, 1084, 1087, 1088, 1144, 1158, 1160, 1160, 1184, 1189, 1219, 1222, 1222, 1230, 1233, 1233, 1237, 1239, 1239, 1264, 1264, 1281, 1284, 1286, 1286, 1289, 1289, 1304, 1304, 1304, 1323, 1326, 1333, 1341, 1358, 1359, 1396, 1400, 1417, 1432, 1434, 1437, 1437, 1439, 1439, 1439, 1439, 1441, 1441, 1441, 1444, 1449, 1450, 1450, 1455, 1462, 1466, 1467, 1475, 1478, 1478, 1478, 1481, 1481, 1480, 1480, 1481, 1482, 1482, 1482, 1482, 1482, 1483, 1487, 1500, 1504, 1504, 1504, 1505, 1506, 1512, 1512, 1512, 1513, 1516, 1516, 1518, 1518, 1522, 1525, 1525, 1525, 1527, 1529, 1530, 1534, 1534, 1540, 1541, 1541, 1543, 1543, 1544, 1544, 1545, 1551, 1551, 1552, 1552, 1552, 1553, 1553, 1553, 1553, 1554, 1554, 1554, 1554, 1559, 1559, 1561, 1588, 1591, 1592, 1593, 1596, 1598, 1598, 1599, 1599, 1600, 1604, 1606, 1606, 1616, 1628, 1629, 1630, 1630, 1631, 1632, 1634, 1634, 2298, 2298, 2299, 2299, 2300, 2303, 2304, 2308, 2308, 2311, 2311, 2313, 2320, 2320, 2327, 2329, 2330, 2331, 2339, 2347, 2349, 2349, 2349, 2349, 2350, 2350, 2349, 2349, 2354, 2354, 2354, 2354, 2354, 2355, 2355, 2357, 2357, 2359, 2359, 2359, 2359, 2359, 2360, 2360, 2360, 2360, 2360, 2361, 2361, 2362, 2362, 2362, 2362, 2362, 2362, 2364, 2365, 2367, 2368, 2369, 2367, 2368, 2368, 2369, 2369, 2369, 2369, 2370, 2371, 2371, 2371, 2371, 2371, 2374, 2374, 2375, 2375, 2379, 2380, 2382, 2382, 2383, 2383, 2384, 2384, 2385, 2388, 2388, 2388, 2391, 2392, 2393, 2393, 2396, 2396, 2397, 2397, 2397, 2397, 2659, 2665, 2666, 2668, 2671, 2673, 2675, 2677, 2678, 2676, 2676, 2661, 2670, 2670, 2672, 2674, 2675, 2677, 2679, 2682, 2683, 2684, 2685, 2685, 2691, 2695, 2701, 2701, 2716, 2717, 2719, 2697, 2701, 2704, 2704, 2705, 2705, 2705, 2705, 2716, 2717, 2717, 2722, 2722, 2723, 2723, 2722, 2722, 2724, 2724, 2724, 2724, 2724, 2724, 2725, 2727, 2727, 2728, 2728, 2729, 2729, 2729, 2731, 2732, 2732, 2738, 2739, 2739, 2739, 2742, 2743, 2743, 2743, 2751, 2752, 2753, 2753, 2755, 2755, 2765, 2770, 2772, 2777, 2775, 2776, 2777, 2781, 2781, 2781, 2781, 2782, 2782, 2888, 2891, 2891, 2895, 2895, 2897, 2899, 2909, 2908, 2911, 2923, 2923, 2923, 2923, 2926, 2940, 2941, 2942, 2942, 2942, 2945, 2945, 2947, 2949, 2950, 2951, 2950, 2950, 2950, 2948, 2949, 2956, 2955, 2959, 2971, 2972, 2974, 2974, 2974, 2974, 2978, 2981, 2983, 2983, 2992, 2994, 3008, 3009, 3010, 3010, 3010, 3020, 3020, 3020, 3021, 3021, 3021, 3022, 3026, 3026, 3026, 3026, 3026, 3026, 3039, 3123, 3123, 3123, 3129, 3130, 3143, 3885, 3885, 3885, 3901, 3901, 3901, 3901, 3917, 3921],
+        spanGaps: false,
+    },
+    {
+        label: "# Families",
+        fill: false,
+        lineTension: 0.1,
+        backgroundColor: "rgba(224, 0, 88,0.4)",
+        borderColor: "rgba(224, 0, 88,1)",
+        borderCapStyle: 'butt',
+        borderDash: [],
+        borderDashOffset: 0.0,
+        borderJoinStyle: 'miter',
+        pointBorderColor: "rgba(224, 0, 88,1)",
+        pointBackgroundColor: "#fff",
+        pointBorderWidth: 1,
+        pointHoverRadius: 5,
+        pointHoverBackgroundColor: "rgba(224, 0, 88,1)",
+        pointHoverBorderColor: "rgba(220,220,220,1)",
+        pointHoverBorderWidth: 2,
+        pointRadius: 3,
+        pointHitRadius: 20,
+        data: [435, 447, 446, 447, 447, 450, 461, 463, 464, 469, 472, 475, 502, 503, 503, 506, 509, 510, 510, 510, 511, 512, 512, 512, 512, 513, 513, 513, 518, 518, 519, 518, 520, 521, 521, 528, 537, 538, 537, 541, 544, 544, 547, 547, 549, 553, 554, 554, 555, 556, 561, 562, 570, 571, 571, 572, 573, 573, 594, 594, 599, 600, 600, 600, 604, 607, 607, 607, 607, 608, 609, 610, 611, 611, 612, 615, 616, 617, 618, 619, 619, 620, 623, 625, 626, 626, 636, 652, 666, 666, 668, 669, 668, 669, 670, 671, 671, 670, 670, 671, 675, 679, 681, 681, 683, 687, 687, 687, 687, 690, 691, 691, 691, 691, 691, 691, 692, 691, 691, 691, 692, 693, 693, 693, 694, 695, 695, 701, 701, 710, 715, 716, 716, 719, 719, 719, 719, 720, 729, 730, 729, 757, 773, 776, 776, 778, 778, 787, 790, 792, 791, 791, 791, 798, 801, 803, 803, 805, 809, 811, 811, 813, 816, 817, 823, 826, 827, 827, 828, 838, 838, 846, 847, 851, 862, 869, 870, 886, 887, 889, 896, 897, 898, 906, 909, 909, 910, 912, 914, 917, 918, 919, 923, 936, 937, 943, 944, 944, 945, 949, 949, 977, 977, 979, 985, 986, 987, 991, 995, 1014, 1014, 1014, 1016, 1022, 1024, 1026, 1027, 1027, 1028, 1029, 1030, 1033, 1037, 1038, 1040, 1043, 1045, 1055, 1056, 1068, 1069, 1077, 1078, 1081, 1083, 1085, 1088, 1088, 1088, 1093, 1094, 1094, 1103, 1104, 1104, 1104, 1105, 1105, 1106, 1108, 1109, 1109, 1114, 1122, 1123, 1124, 1123, 1124, 1126, 1127, 1127, 1136, 1136, 1137, 1136, 1136, 1135, 1137, 1137, 1137, 1137, 1141, 1144, 1145, 1145, 1150, 1152, 1153, 1159, 1158, 1159, 1162, 1162, 1163, 1167, 1169, 1172, 1175, 1175, 1176, 1177, 1179, 1180, 1180, 1180, 1182, 1183, 1183, 1196, 1197, 1199, 1200, 1201, 1203, 1204, 1205, 1211, 1212, 1213, 1215, 1216, 1216, 1216, 1229, 1233, 1235, 1238, 1241, 1243, 1246, 1253, 1256, 1257, 1259, 1265, 1266, 1267, 1268, 1270, 1273, 1274, 1275, 1276, 1277, 1278, 1278, 1279, 1284, 1286, 1286, 1287, 1288, 1293, 1296, 1298, 1300, 1300, 1302, 1303, 1305, 1317, 1316, 1317, 1318, 1320, 1318, 1323, 1323, 1324, 1329, 1333, 1333, 1335, 1334, 1334, 1334, 1356, 1356, 1357, 1357, 1359, 1368, 1376, 1377, 1379, 1381, 1381, 1384, 1384, 1384, 1384, 1386, 1387, 1388, 1388, 1388, 1388, 1395, 1397, 1401, 1401, 1403, 1405, 1407, 1407, 1410, 1413, 1427, 1428, 1430, 1431, 1440, 1441, 1442, 1442, 1445, 1447, 1450, 1452, 1454, 1454, 1455, 1456, 1458, 1461, 1463, 1464, 1464, 1464, 1467, 1469, 1472, 1475, 1476, 1480, 1481, 1482, 1485, 1487, 1489, 1489, 1490, 1491, 1491, 1492, 1498, 1498, 1501, 1503, 1503, 1503, 1508, 1509, 1511, 1512, 1513, 1513, 1513, 1516, 1516, 1520, 1521, 1526, 1528, 1529, 1529, 1532, 1534, 1536, 1538, 1541, 1545, 1547, 1552, 1553, 1555, 1556, 1558, 1558, 1559, 1560, 1563, 1566, 1573, 1574, 1574, 1573, 1574, 1583, 1584, 1587, 1591, 1593, 1598, 1605, 1615, 1616, 1623, 1628, 1629, 1629, 1634, 1638, 1644, 1647, 1647, 1652, 1653, 1655, 1661, 1663, 1665, 1667, 1667, 1671, 1670, 1670, 1670, 1671, 1672, 1675, 1681, 1679, 1681, 1681, 1683, 1690, 1708, 2439, 2440, 2442, 2445, 2446, 2449, 2452, 2459, 2463],
+        spanGaps: false,
+    },
+    {
+        label: "# Families Covered",
+        fill: false,
+        lineTension: 0.1,
+        backgroundColor: "rgba(128, 0, 56,0.4)",
+        borderColor: "rgba(128, 0, 56,1)",
+        borderCapStyle: 'butt',
+        borderDash: [],
+        borderDashOffset: 0.0,
+        borderJoinStyle: 'miter',
+        pointBorderColor: "rgba(128, 0, 56,1)",
+        pointBackgroundColor: "#fff",
+        pointBorderWidth: 1,
+        pointHoverRadius: 5,
+        pointHoverBackgroundColor: "rgba(128, 0, 56,1)",
+        pointHoverBorderColor: "rgba(220,220,220,1)",
+        pointHoverBorderWidth: 2,
+        pointRadius: 3,
+        pointHitRadius: 20,
+        data: [24, 24, 24, 25, 25, 33, 35, 37, 37, 69, 69, 85, 104, 104, 104, 104, 106, 106, 106, 106, 111, 111, 111, 112, 113, 113, 113, 113, 113, 114, 116, 119, 122, 122, 123, 123, 124, 124, 125, 125, 125, 125, 126, 126, 128, 129, 130, 130, 130, 132, 132, 132, 133, 133, 134, 135, 138, 138, 140, 140, 142, 142, 142, 145, 148, 148, 148, 148, 148, 149, 150, 151, 151, 151, 151, 154, 154, 154, 154, 154, 154, 155, 155, 155, 156, 155, 157, 157, 162, 163, 164, 164, 164, 165, 165, 165, 165, 166, 166, 167, 168, 168, 170, 170, 170, 172, 172, 175, 175, 178, 179, 181, 182, 183, 183, 184, 186, 187, 188, 188, 188, 190, 191, 191, 192, 192, 193, 195, 195, 197, 197, 197, 197, 197, 198, 198, 198, 198, 198, 198, 199, 199, 199, 200, 200, 201, 202, 204, 204, 218, 219, 224, 226, 230, 231, 231, 231, 231, 231, 231, 233, 233, 234, 235, 237, 237, 237, 238, 238, 241, 241, 243, 244, 244, 244, 245, 245, 245, 245, 245, 246, 246, 246, 246, 246, 246, 247, 251, 252, 252, 252, 252, 252, 255, 255, 256, 257, 258, 258, 258, 258, 259, 259, 259, 260, 260, 260, 260, 261, 261, 261, 261, 261, 261, 261, 262, 262, 262, 262, 262, 263, 263, 263, 264, 264, 264, 266, 268, 269, 269, 269, 270, 270, 274, 276, 277, 277, 278, 279, 279, 279, 280, 280, 281, 281, 281, 281, 283, 283, 284, 284, 284, 284, 284, 285, 285, 683, 683, 683, 683, 683, 685, 685, 685, 684, 684, 684, 686, 687, 687, 687, 689, 690, 690, 690, 692, 693, 693, 693, 693, 693, 693, 693, 693, 694, 694, 694, 694, 694, 694, 694, 694, 694, 695, 696, 696, 696, 696, 697, 697, 697, 697, 697, 697, 697, 698, 698, 698, 698, 698, 698, 698, 698, 700, 700, 700, 700, 700, 700, 700, 700, 700, 700, 700, 700, 700, 700, 700, 700, 702, 702, 702, 702, 703, 703, 703, 703, 704, 704, 704, 704, 705, 708, 708, 709, 710, 710, 711, 711, 713, 713, 713, 713, 713, 713, 936, 935, 936, 936, 936, 937, 937, 938, 937, 936, 936, 937, 938, 938, 938, 938, 939, 943, 944, 945, 945, 945, 946, 946, 952, 952, 954, 954, 954, 954, 954, 952, 953, 954, 954, 954, 954, 954, 954, 954, 955, 955, 957, 957, 957, 957, 960, 960, 961, 961, 961, 961, 961, 961, 961, 962, 962, 962, 963, 964, 964, 964, 965, 965, 965, 967, 968, 968, 968, 970, 970, 970, 970, 970, 969, 969, 969, 970, 970, 974, 974, 975, 977, 977, 977, 978, 978, 978, 978, 979, 980, 980, 1040, 1041, 1041, 1042, 1043, 1044, 1045, 1047, 1047, 1047, 1046, 1046, 1046, 1046, 1047, 1048, 1049, 1049, 1049, 1049, 1048, 1048, 1048, 1048, 1049, 1050, 1051, 1051, 1051, 1051, 1051, 1054, 1052, 1053, 1054, 1054, 1054, 1054, 1054, 1054, 1054, 1056, 1056, 1056, 1059, 1061, 1063, 1063, 1064, 1065, 1065, 1068, 1068, 1068, 1069, 1069, 1070, 1070, 1070, 1071, 1071, 1071, 1071, 1071, 1072, 1132, 1132, 1133, 1133, 1134, 1136, 1425, 1425, 1425, 1426, 1426, 1426, 1426, 1426, 1426],
+        spanGaps: false,
+    },
+    {
+        label: "# YARA Rules",
+        fill: false,
+        lineTension: 0.1,
+        backgroundColor: "rgba(0, 72, 224,0.4)",
+        borderColor: "rgba(0, 72, 224,1)",
+        borderCapStyle: 'butt',
+        borderDash: [],
+        borderDashOffset: 0.0,
+        borderJoinStyle: 'miter',
+        pointBorderColor: "rgba(0, 72, 224,1)",
+        pointBackgroundColor: "#fff",
+        pointBorderWidth: 1,
+        pointHoverRadius: 5,
+        pointHoverBackgroundColor: "rgba(0, 72, 224,1)",
+        pointHoverBorderColor: "rgba(220,220,220,1)",
+        pointHoverBorderWidth: 2,
+        pointRadius: 3,
+        pointHitRadius: 20,
+        data: [33, 33, 33, 34, 34, 42, 45, 47, 47, 100, 100, 136, 165, 165, 165, 165, 169, 171, 171, 171, 179, 181, 183, 184, 185, 185, 185, 186, 187, 196, 199, 203, 206, 205, 206, 206, 207, 207, 209, 209, 209, 209, 211, 212, 217, 221, 224, 224, 224, 226, 226, 226, 228, 228, 229, 230, 238, 238, 240, 240, 242, 242, 242, 248, 251, 251, 252, 252, 252, 253, 255, 256, 256, 256, 257, 260, 260, 260, 260, 260, 260, 262, 262, 262, 263, 263, 266, 266, 272, 273, 275, 275, 276, 277, 277, 277, 277, 278, 279, 280, 282, 282, 285, 285, 285, 288, 287, 290, 290, 293, 296, 302, 303, 304, 304, 305, 307, 308, 309, 309, 309, 311, 312, 312, 313, 313, 315, 318, 319, 326, 326, 326, 326, 326, 329, 329, 329, 329, 329, 329, 330, 330, 330, 330, 330, 331, 332, 335, 335, 349, 349, 357, 359, 364, 367, 367, 367, 367, 367, 367, 370, 370, 371, 373, 375, 375, 375, 376, 376, 379, 379, 381, 382, 382, 382, 383, 384, 384, 384, 384, 385, 385, 385, 385, 385, 385, 386, 390, 392, 392, 393, 393, 393, 397, 397, 401, 403, 406, 406, 406, 406, 408, 408, 408, 411, 411, 411, 411, 412, 412, 412, 412, 412, 412, 412, 413, 413, 413, 413, 413, 414, 414, 414, 415, 415, 415, 419, 422, 423, 423, 423, 424, 424, 428, 433, 434, 434, 435, 436, 436, 436, 437, 437, 438, 439, 439, 439, 441, 441, 442, 442, 442, 442, 442, 443, 443, 1038, 1038, 1038, 1038, 1038, 1042, 1042, 1042, 1041, 1041, 1041, 1043, 1044, 1045, 1045, 1047, 1048, 1048, 1048, 1050, 1051, 1051, 1051, 1051, 1051, 1051, 1051, 1051, 1052, 1052, 1052, 1052, 1052, 1052, 1052, 1052, 1052, 1053, 1054, 1054, 1054, 1054, 1055, 1055, 1055, 1055, 1055, 1055, 1055, 1056, 1056, 1056, 1056, 1056, 1056, 1056, 1056, 1058, 1058, 1058, 1058, 1058, 1058, 1058, 1058, 1060, 1060, 1060, 1060, 1060, 1060, 1060, 1060, 1062, 1062, 1062, 1062, 1063, 1063, 1064, 1064, 1065, 1065, 1065, 1065, 1067, 1071, 1071, 1073, 1074, 1074, 1075, 1075, 1077, 1077, 1079, 1079, 1079, 1079, 1367, 1367, 1369, 1369, 1369, 1370, 1370, 1371, 1370, 1370, 1369, 1371, 1372, 1372, 1372, 1372, 1373, 1377, 1378, 1379, 1379, 1379, 1380, 1381, 1388, 1388, 1391, 1391, 1391, 1391, 1392, 1390, 1391, 1393, 1393, 1394, 1394, 1394, 1394, 1394, 1395, 1395, 1397, 1397, 1397, 1397, 1401, 1401, 1402, 1402, 1402, 1402, 1402, 1402, 1402, 1403, 1403, 1403, 1404, 1405, 1405, 1405, 1406, 1406, 1406, 1408, 1409, 1409, 1409, 1412, 1412, 1412, 1412, 1412, 1411, 1411, 1411, 1412, 1412, 1417, 1417, 1418, 1420, 1420, 1420, 1421, 1421, 1421, 1421, 1422, 1423, 1423, 1507, 1508, 1508, 1509, 1510, 1512, 1513, 1515, 1515, 1515, 1515, 1515, 1516, 1516, 1518, 1520, 1518, 1518, 1518, 1518, 1518, 1516, 1516, 1516, 1517, 1520, 1521, 1521, 1521, 1521, 1521, 1525, 1523, 1524, 1527, 1527, 1527, 1527, 1527, 1527, 1527, 1529, 1531, 1531, 1534, 1536, 1538, 1538, 1539, 1540, 1540, 1543, 1543, 1545, 1546, 1546, 1547, 1547, 1547, 1548, 1548, 1548, 1548, 1548, 1550, 1645, 1645, 1646, 1646, 1647, 1653, 2018, 2018, 2018, 2020, 2020, 2020, 2020, 2020, 2023],
+        spanGaps: false,
+    }
+]
+    },
+    options: {
+        maintainAspectRatio:true,
+        title: {
+            display: true,
+            text: 'Corpus & YARA Growth'
+        },
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+    }
+    });
+</script>
+  </body>
+</html>

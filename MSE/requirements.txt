@@ -1,0 +1,6 @@
+pymongo
+requests
+pymongo[srv]
+p7zip-full 
+p7zip-rar
+python-magic
