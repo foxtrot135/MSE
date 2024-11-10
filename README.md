@@ -14,7 +14,7 @@ User-Friendly Interface: Designed for ease of use, especially for those new to m
 Customizable Search Options: Tailor search parameters to find samples that match specific research requirements, improving accuracy and relevancy.
 
 ## Installation
-- Requires Cuckoo Sandbox (*has been undergoing major functionality revamps for a while but can't wait FOR IT to be back!!*)
+- Requires Cuckoo Sandbox (*has been undergoing MAJOR functionality revamps for a while but can't wait FOR IT to be back!!*)
 - MongoDB
 - Python
 
